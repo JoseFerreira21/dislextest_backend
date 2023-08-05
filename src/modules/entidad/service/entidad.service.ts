@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Client } from 'pg';
 
 import { Entidades } from '../entities/entidades.entity';
 //import { AlumnoService } from 'src/modules/alumno/service/alumno.service';
@@ -14,6 +15,7 @@ export class EntidadService {
   constructor(
     @InjectRepository(Entidades) private entidadRepository: Repository<Entidades>,
     @InjectRepository(Usuarios) private usuariosRepository: Repository<Usuarios>,
+    @Inject('PG') private clientPg: Client,
     //private alumnoRepository : AlumnoService,
     ) {}
 
@@ -27,6 +29,22 @@ export class EntidadService {
       throw new NotFoundException(`Entidad #${id} no existe`);
     }
     return entidad;
+  }
+  
+  findOneUserId(id: number){
+    return new Promise((resolve, reject) => {
+      this.clientPg.query( `select *
+                             from entidades e
+                            where 1 = 1
+                              and e."usuarioId" = ${id}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
   }
 
   async create(data: CreateEntidadDto) {

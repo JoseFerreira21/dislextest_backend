@@ -23,7 +23,7 @@ export class AuthController {
     return this.authService.generateJWT(user);
   }
   
-  @HttpCode(201)
+  @HttpCode(200)
   @Post('is-available')
   async isAvailable(@Req() req: Request): Promise<any>{
    const email = req.body.email as string;
@@ -50,17 +50,10 @@ export class AuthController {
   @HttpCode(200)
   @Get('profile')
   async getUserProfile(@Req() req: Request): Promise<any> {
-    const user = await req.user as PayloadToken;
-    //console.log(user.sub); //no consigue descifrar el token y acceder al sub
-    //return this.usuarioService.findOne(user.sub);
+    const user = req.body as PayloadToken;
+    //console.log(user); //no consigue descifrar el token y acceder al sub
+    return await this.usuarioService.findOne(6);
   }
-  
-  @HttpCode(200)
-  @Get('profile1')
-	myMethod(@CurrnetUser() user: PayloadToken) {
-		console.log(user.sub);
-    //return this.usuarioService.findOne(user.sub);
-	}
 
 
 }

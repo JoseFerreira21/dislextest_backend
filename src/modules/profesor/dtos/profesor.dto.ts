@@ -16,13 +16,6 @@ export class CreateProfesorDto {
   @ApiProperty({ description: `id entidad` })
   readonly entidadId: number;
 
-  
-  @IsArray()
-  @IsNotEmpty()
-  @ApiProperty()
-  readonly alumnosIds: number[];
-
-
 }
 
 export class UpdateProfesorDto extends PartialType(CreateProfesorDto) {}

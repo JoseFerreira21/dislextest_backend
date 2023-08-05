@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 import { Alumnos } from '../entities/alumnos.entity';
 import { CreateAlumnoDto, UpdateAlumnoDto } from '../dtos/alumno.dto';
@@ -8,14 +8,15 @@ import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
 import { Client } from 'pg';
 
 import { ApiTags } from '@nestjs/swagger';
+import { Profesores } from 'src/modules/profesor/entities/profesores.entity';
 
 @ApiTags()
 @Injectable()
 export class AlumnoService {
   constructor(
     @InjectRepository(Alumnos) private alumnoRepository: Repository<Alumnos>,
-    @InjectRepository(Entidades)
-    private entidadRepository: Repository<Entidades>,
+    @InjectRepository(Entidades) private entidadRepository: Repository<Entidades>,
+    @InjectRepository(Profesores) private profesorRepository: Repository<Profesores>,
     @Inject('PG') private clientPg: Client,
   ) {}
 
@@ -41,6 +42,14 @@ export class AlumnoService {
       const entidad = await this.entidadRepository.findOne(data.entidadId);
       newAlumno.entidad = entidad; //relación uno a uno
     }
+    
+    if (data.profesorId) {
+      const profesor = await this.profesorRepository.find({
+        id: In(data.profesorId),
+      });
+      newAlumno.profesor = profesor; //relación muchos a muchos
+    }
+
     return this.alumnoRepository.save(newAlumno);
   }
 

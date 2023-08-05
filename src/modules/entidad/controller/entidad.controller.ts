@@ -17,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
 
 @ApiTags('entidad')
-//@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('entidad')
 export class EntidadController {
   constructor(private entidadesService: EntidadService) {}
@@ -30,6 +30,11 @@ export class EntidadController {
   @Get(':id')
   getOne(@Param('id', ParseIntPipe) id: number) {
     return this.entidadesService.findOne(id);
+  }
+
+  @Get('/usuario/:id')
+  getOneUserId(@Param('id', ParseIntPipe) id: number) {
+    return this.entidadesService.findOneUserId(id);
   }
 
   @Post()

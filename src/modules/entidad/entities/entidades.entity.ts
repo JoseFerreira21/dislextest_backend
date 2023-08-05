@@ -43,10 +43,10 @@ export class Entidades {
   @JoinColumn()
   usuario: Usuarios;
   
-  @OneToOne(() => Alumnos, (alumno) => alumno.entidad) //Cambiar por sólo entidad
+  @OneToOne(() => Alumnos, (alumno) => alumno.entidad)
   alumno : Alumnos;
 
-  @OneToOne(() => Profesores, (profesor) => profesor.entidad) //Cambiar por sólo entidad
+  @OneToOne(() => Profesores, (profesor) => profesor.entidad)
   profesor: Profesores;
 
   @CreateDateColumn({

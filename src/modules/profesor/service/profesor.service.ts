@@ -4,7 +4,7 @@ import { Repository, In } from 'typeorm';
 
 import { Profesores } from '../entities/profesores.entity';
 import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
-import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
+//import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
 import { CreateProfesorDto, UpdateProfesorDto } from '../dtos/profesor.dto';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -15,7 +15,7 @@ export class ProfesorService {
     @InjectRepository(Profesores)
     private profesorRepository: Repository<Profesores>,
     @InjectRepository(Entidades) private entidadRepo: Repository<Entidades>,
-    @InjectRepository(Alumnos) private alumnoRepo: Repository<Alumnos>,
+    //@InjectRepository(Alumnos) private alumnoRepo: Repository<Alumnos>,
   ) {}
 
   findAll() {
@@ -40,13 +40,6 @@ export class ProfesorService {
       newProfesor.entidad = entidad; //relación uno a uno
     }
 
-    if (data.alumnosIds) {
-      const alumnos = await this.alumnoRepo.find({
-        id: In(data.alumnosIds),
-      });
-      newProfesor.alumnos = alumnos;
-    }
-    
     return this.profesorRepository.save(newProfesor);
   }
 

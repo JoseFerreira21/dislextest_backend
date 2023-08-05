@@ -25,9 +25,25 @@ export class ResultadoTestService {
     //private profesorService : ProfesorService,
   ){}
 
-  findAll() {
-    return this.ResultadoTestRepository.find();
-  }
+    /*findAll() {
+        return this.ResultadoTestRepository.find();
+      }*/
+
+    findAll() {
+      return new Promise((resolve, reject) => {
+        this.clientPg.query(
+          `SELECT *
+                          FROM v_resultados
+                          WHERE 1 = 1`,
+          (err, res) => {
+            if (err) {
+              reject(err);
+            }
+            resolve(res.rows);
+          },
+        );
+      });
+    }
 
   async findOne(id: number): Promise<ResultadoTest> {
     const resultadotest = await this.ResultadoTestRepository.findOne({
