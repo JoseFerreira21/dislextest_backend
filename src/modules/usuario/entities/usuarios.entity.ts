@@ -20,6 +20,9 @@ export class Usuarios {
   id: number;
   
   @Column({ type: 'varchar', length: 255 })
+  nombre: string;
+
+  @Column({ type: 'varchar', length: 255 })
   email: string;
 
   @Exclude()
