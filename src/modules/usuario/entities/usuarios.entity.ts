@@ -20,7 +20,7 @@ export class Usuarios {
   id: number;
   
   @Column({ type: 'varchar', length: 255 })
-  nombre: string;
+  name: string;
 
   @Column({ type: 'varchar', length: 255 })
   email: string;
@@ -32,14 +32,8 @@ export class Usuarios {
   @Column({ type: 'varchar' })
   role: Role;
 
-  @Column({ type: 'varchar', length: 1 })
-  isActive: boolean;
-
   @OneToOne(() => Entidades, (entidad) => entidad.usuario)
   entidad: Entidades;
-
-  @Column({ type: 'date' })
-  lastLogin: Date;
 
   @CreateDateColumn({
     type: 'timestamptz',

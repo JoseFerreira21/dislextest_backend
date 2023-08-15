@@ -15,7 +15,7 @@ export class CreateUsuarioDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  nombre: string;
+  name: string;
   
   @ApiProperty()
   @IsString()
@@ -32,20 +32,6 @@ export class CreateUsuarioDto {
   @IsEnum(Role, {message: 'Rol no válido'})
   role : Role;
 
-  @ApiProperty()
-  @IsString()
-  isActive: boolean;
-
-  /*@ApiProperty()
-  @IsNotEmpty()
-  @IsPositive()
-  @IsNumber()
-  entidadId: number;*/
-
-  @ApiProperty()
-  @Type(() => Date)
-  @IsDate()
-  lastLogin: Date;
 }
 
 export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {}
