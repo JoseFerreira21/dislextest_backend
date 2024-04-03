@@ -9,10 +9,11 @@ export class CreateAlumnoDto {
   @IsNumber()
   entidadId: number;
 
-  @IsArray()
-  @IsNotEmpty()
   @ApiProperty()
-  readonly profesorId: number[];
+  @IsNotEmpty()
+  @IsPositive()
+  @IsNumber()
+  profesorId: number;
 
 }
 

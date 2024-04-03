@@ -20,13 +20,13 @@ export class AlumnoService {
     @Inject('PG') private clientPg: Client,
   ) {}
 
-  /*findAll() {
+  findAll() {
     return this.alumnoRepository.find();
-  }*/
+  }
 
   async findOne(id: number): Promise<Alumnos> {
     const alumno = await this.alumnoRepository.findOne(id, {
-      relations: ['entidad', 'profesor'],
+      relations: ['entidad'],
       where: { id: id },
     });
     if (!alumno) {
@@ -44,10 +44,8 @@ export class AlumnoService {
     }
     
     if (data.profesorId) {
-      const profesor = await this.profesorRepository.find({
-        id: In(data.profesorId),
-      });
-      newAlumno.profesor = profesor; //relación muchos a muchos
+      const profesor = await this.profesorRepository.findOne({id: data.profesorId});
+      newAlumno.profesor = profesor;
     }
 
     return this.alumnoRepository.save(newAlumno);
@@ -70,7 +68,7 @@ export class AlumnoService {
     return this.alumnoRepository.remove(index);
   }
 
-  findAll() {
+  findAllAlumns() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
         `SELECT a.id,
@@ -83,6 +81,30 @@ export class AlumnoService {
           WHERE 1 = 1
             and a."entidadId" = e.id
             and e."tipoEntidad" = 'AL'`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
+  findAllByProfesor(idProfesor: number) {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `SELECT a.id,
+                (((e."nombre") ::text || ' ' ::text) || (e."apellido") ::text) AS nombreAlumno,
+                date_part('year', now()) - date_part('year', e."fechaNacimiento") ||
+                ' años' as edad,
+                e."direccion",
+                e."nroDocumento" ci
+              FROM alumnos a, entidades e
+              WHERE 1 = 1
+              and a."profesorId" = ${idProfesor}
+              and a."entidadId" = e.id
+              and e."tipoEntidad" = 'AL'`,
         (err, res) => {
           if (err) {
             reject(err);

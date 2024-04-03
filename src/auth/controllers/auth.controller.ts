@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
@@ -22,7 +22,7 @@ export class AuthController {
     const user = req.user as Usuarios;
     return this.authService.generateJWT(user);
   }
-  
+
   @HttpCode(200)
   @Post('is-available')
   async isAvailable(@Req() req: Request): Promise<any>{
@@ -51,7 +51,7 @@ export class AuthController {
   @Get('profile')
   async getUserProfile(@Req() req: Request): Promise<any> {
     const user = req.body as PayloadToken;
-    //console.log(user); //no consigue descifrar el token y acceder al sub
+    console.log(user); //no consigue descifrar el token y acceder al sub
     return await this.usuarioService.findOne(6);
   }
 

@@ -20,9 +20,9 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/models/roles.model';
 
-@ApiBearerAuth()
+//@ApiBearerAuth()
 @ApiTags('alumno')
-@UseGuards(JwtAuthGuard, RolesGuard)
+//@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('alumno')
 export class AlumnoController {
   constructor(private alumnosService: AlumnoService,) {}
@@ -36,7 +36,12 @@ export class AlumnoController {
   //@Public()
   @Get()
   getAlumnosEntidad() {
-    return this.alumnosService.findAll();
+    return this.alumnosService.findAllAlumns();
+  }
+ 
+  @Get(':idProfesor')
+  getAlumnosByProfesor(@Param('idProfesor', ParseIntPipe) idProfesor: number) {
+    return this.alumnosService.findAllByProfesor(idProfesor);
   }
   
   //@Roles(Role.ADMIN, Role.PROFESOR)

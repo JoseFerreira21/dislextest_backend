@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToOne,
   OneToMany,
-  ManyToMany,
+  ManyToOne,
   JoinColumn,
   JoinTable,
 } from 'typeorm';
@@ -24,12 +24,17 @@ export class Alumnos {
   @Column({ type: 'int' })
   entidadId: number;
 
+  
+  @ManyToOne(
+    () => Profesores,
+    (profesor) => profesor.id,
+    { eager: true, cascade: true, onDelete: 'CASCADE' },
+  )
+  profesor: Profesores;
+
   @OneToOne(() => Entidades, (entidad) => entidad.alumno)
   @JoinColumn()
   entidad: Entidades;
-
-  @ManyToMany(() => Profesores, (profesor) => profesor.alumnos)
-  profesor: Profesores[]; 
 
   @OneToMany(()  => ResultadoTest, (resultadotest) => resultadotest.alumno)
   aluresultadotest: ResultadoTest[];

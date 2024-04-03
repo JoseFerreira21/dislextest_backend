@@ -17,7 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
 
 @ApiTags('entidad')
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Controller('entidad')
 export class EntidadController {
   constructor(private entidadesService: EntidadService) {}
