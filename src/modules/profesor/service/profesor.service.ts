@@ -24,7 +24,7 @@ export class ProfesorService {
 
   async findOne(id: number): Promise<Profesores> {
     const profesor = await this.profesorRepository.findOne(id, {
-      relations: ['entidad'],
+      //relations: ['entidad'],
       where: { id: id },
     });
     if (!profesor) {

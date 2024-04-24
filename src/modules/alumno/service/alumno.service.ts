@@ -26,8 +26,18 @@ export class AlumnoService {
 
   async findOne(id: number): Promise<Alumnos> {
     const alumno = await this.alumnoRepository.findOne(id, {
-      relations: ['entidad'],
+      //relations: ['entidad'],
       where: { id: id },
+    });
+    if (!alumno) {
+      throw new NotFoundException(`Alumno #${id} no existe`);
+    }
+    return alumno;
+  }
+
+  async findAlumnoId(id: number): Promise<Alumnos> {
+    const alumno = await this.alumnoRepository.findOne(id, {
+      where: { entidadId: id },
     });
     if (!alumno) {
       throw new NotFoundException(`Alumno #${id} no existe`);

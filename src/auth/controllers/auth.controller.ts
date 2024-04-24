@@ -52,7 +52,7 @@ export class AuthController {
   async getUserProfile(@Req() req: Request): Promise<any> {
     const user = req.body as PayloadToken;
     console.log(user); //no consigue descifrar el token y acceder al sub
-    return await this.usuarioService.findOne(6);
+    return await this.usuarioService.findOne(1);
   }
 
 

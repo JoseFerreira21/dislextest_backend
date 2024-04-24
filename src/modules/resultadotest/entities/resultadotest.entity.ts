@@ -20,10 +20,10 @@ export class ResultadoTest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 1 })
+  @Column({ type: 'varchar', length: 1, nullable: true})
   indicador: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   observacion: string;
 
   @Column({ type: 'int' })

@@ -23,7 +23,7 @@ export class EntidadController {
   constructor(private entidadesService: EntidadService) {}
 
   @Get()
-  getBrands() {
+  getEntidades() {
     return this.entidadesService.findAll();
   }
 

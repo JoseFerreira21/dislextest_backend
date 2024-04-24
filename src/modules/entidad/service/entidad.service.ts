@@ -8,6 +8,7 @@ import { Entidades } from '../entities/entidades.entity';
 import { Usuarios } from 'src/modules/usuario/entities/usuarios.entity';
 import { CreateEntidadDto, UpdateEntidadDto } from '../dtos/entidad.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
 
 @ApiTags()
 @Injectable()
@@ -15,6 +16,7 @@ export class EntidadService {
   constructor(
     @InjectRepository(Entidades) private entidadRepository: Repository<Entidades>,
     @InjectRepository(Usuarios) private usuariosRepository: Repository<Usuarios>,
+    //@InjectRepository(Alumnos) private alumnoRepository: Repository<Alumnos>,
     @Inject('PG') private clientPg: Client,
     //private alumnoRepository : AlumnoService,
     ) {}
@@ -67,9 +69,11 @@ export class EntidadService {
 
   async remove(id: number) {
     const index = await this.entidadRepository.findOne({ where: { id: id } });
+    //const alumno = await this.alumnoRepository.findAlumnoId(id);
     if (!index) {
       throw new NotFoundException(`Entidad #${id} no existe`);
     }
+    //this.alumnoRepository.remove(alumno.id);
     return this.entidadRepository.remove(index);
   }
 }

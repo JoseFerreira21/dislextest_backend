@@ -17,26 +17,28 @@ import { ResultadoTest } from 'src/modules/resultadotest/entities/resultadotest.
 
 @Entity()
 export class Alumnos {
-  
   @PrimaryGeneratedColumn()
   id: number;
-  
+
   @Column({ type: 'int' })
   entidadId: number;
 
-  
-  @ManyToOne(
-    () => Profesores,
-    (profesor) => profesor.id,
-    { eager: true, cascade: true, onDelete: 'CASCADE' },
-  )
+  @ManyToOne(() => Profesores, (profesor) => profesor.id, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   profesor: Profesores;
 
-  @OneToOne(() => Entidades, (entidad) => entidad.alumno)
+  @OneToOne(() => Entidades, (entidad) => entidad.alumno, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   entidad: Entidades;
 
-  @OneToMany(()  => ResultadoTest, (resultadotest) => resultadotest.alumno)
+  @OneToMany(() => ResultadoTest, (resultadotest) => resultadotest.alumno)
   aluresultadotest: ResultadoTest[];
 
   @CreateDateColumn({
@@ -50,5 +52,4 @@ export class Alumnos {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
-
 }
