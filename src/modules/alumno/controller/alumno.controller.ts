@@ -40,12 +40,12 @@ export class AlumnoController {
   }
 
   //@Public()
-  @Get(':idEntidad')
+  /*@Get(':idEntidad')
   getEntidadId(@Param('idEntidad', ParseIntPipe) idEntidad: number) {
     return this.alumnosService.findAlumnoId(idEntidad);
-  }
+  }*/
  
-  @Get(':idProfesor')
+  @Get('profesor/:idProfesor')
   getAlumnosByProfesor(@Param('idProfesor', ParseIntPipe) idProfesor: number) {
     return this.alumnosService.findAllByProfesor(idProfesor);
   }

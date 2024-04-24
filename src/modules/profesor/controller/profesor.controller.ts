@@ -24,13 +24,18 @@ export class ProfesorController {
   constructor(private profesorService: ProfesorService) {}
 
   @Get()
-  getProducts() {
+  getAll() {
     return this.profesorService.findAll();
   }
 
   @Get(':id')
   getOne(@Param('id', ParseIntPipe) id: number) {
     return this.profesorService.findOne(id);
+  }
+   
+  @Get('usuario/:idUsuario')
+  getProfesorByUserId(@Param('idUsuario', ParseIntPipe) idUsuario: number) {
+    return this.profesorService.findProfesorByUserId(idUsuario);
   }
 
   //Para peticiones de varios productos.

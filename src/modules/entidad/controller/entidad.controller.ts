@@ -32,9 +32,9 @@ export class EntidadController {
     return this.entidadesService.findOne(id);
   }
 
-  @Get('/usuario/:id')
-  getOneUserId(@Param('id', ParseIntPipe) id: number) {
-    return this.entidadesService.findOneUserId(id);
+  @Get('/usuario/:idUsuario')
+  getOneUserId(@Param('idUsuario', ParseIntPipe) idUsuario: number) {
+    return this.entidadesService.findOneUserId(idUsuario);
   }
 
   @Post()

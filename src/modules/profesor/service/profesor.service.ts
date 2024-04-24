@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 
@@ -7,6 +7,7 @@ import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
 //import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
 import { CreateProfesorDto, UpdateProfesorDto } from '../dtos/profesor.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Client } from 'pg';
 
 @ApiTags()
 @Injectable()
@@ -15,8 +16,9 @@ export class ProfesorService {
     @InjectRepository(Profesores)
     private profesorRepository: Repository<Profesores>,
     @InjectRepository(Entidades) private entidadRepo: Repository<Entidades>,
-    //@InjectRepository(Alumnos) private alumnoRepo: Repository<Alumnos>,
-  ) {}
+    @Inject('PG') private clientPg: Client,
+  ) //@InjectRepository(Alumnos) private alumnoRepo: Repository<Alumnos>,
+  {}
 
   findAll() {
     return this.profesorRepository.find({ relations: ['entidad'] });
@@ -60,5 +62,22 @@ export class ProfesorService {
       throw new NotFoundException(`Profesor #${id} no existe`);
     }
     return this.profesorRepository.remove(index);
+  }
+
+  findProfesorByUserId(idUsuario: number) {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `select p.* 
+          from profesores p, entidades e 
+        where p."entidadId" = e.id 
+          and e."usuarioId" = ${idUsuario}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
   }
 }
