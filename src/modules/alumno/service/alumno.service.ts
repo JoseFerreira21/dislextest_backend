@@ -104,17 +104,20 @@ export class AlumnoService {
   findAllByProfesor(idProfesor: number) {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
-        `SELECT a.id,
-                (((e."nombre") ::text || ' ' ::text) || (e."apellido") ::text) AS nombreAlumno,
-                date_part('year', now()) - date_part('year', e."fechaNacimiento") ||
-                ' años' as edad,
-                e."direccion",
-                e."nroDocumento" ci
-              FROM alumnos a, entidades e
-              WHERE 1 = 1
-              and a."profesorId" = ${idProfesor}
-              and a."entidadId" = e.id
-              and e."tipoEntidad" = 'AL'`,
+                        `SELECT a.id as "alumnoId", 
+                                e."tipoEntidad", 
+                                e.nombre, 
+                                e.apellido, 
+                                TO_CHAR("fechaNacimiento", 'DD/MM/YYYY') as "fechaNacimiento",
+                                e.telefono, 
+                                e.direccion,
+                                e."nroDocumento" 
+                           FROM alumnos a, entidades e
+                          WHERE 1 = 1
+                           and a."profesorId" = ${idProfesor}
+                           and a."entidadId" = e.id
+                           and e."tipoEntidad" = 'AL'  
+                        order by a.id`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -124,16 +127,5 @@ export class AlumnoService {
       );
     });
   }
-  /*
-  finOneById(id: number) { // 👈 new method
-    return new Promise((resolve, reject) => {
-      this.clientPg.query(`SELECT * FROM alumno WHERE id = #${id}`, (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res.rows);
-      });
-    });
-  }
-  */
+
 }
