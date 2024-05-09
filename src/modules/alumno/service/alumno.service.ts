@@ -110,6 +110,8 @@ export class AlumnoService {
                                 e.nombre, 
                                 e.apellido, 
                                 TO_CHAR("fechaNacimiento", 'DD/MM/YYYY') as "fechaNacimiento",
+                                date_part('year', now()) - date_part('year', e."fechaNacimiento") ||
+                                ' años' as edad,
                                 e.telefono, 
                                 e.direccion,
                                 e."nroDocumento" 
