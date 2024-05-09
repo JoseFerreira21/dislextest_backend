@@ -105,6 +105,7 @@ export class AlumnoService {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
                         `SELECT a.id as "alumnoId", 
+                                e.id,
                                 e."tipoEntidad", 
                                 e.nombre, 
                                 e.apellido, 
