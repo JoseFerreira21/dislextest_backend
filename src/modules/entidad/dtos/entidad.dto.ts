@@ -42,8 +42,6 @@ export class CreateEntidadDto {
   nroDocumento: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsPositive()
   @IsNumber()
   @IsOptional()
   usuarioId: number;

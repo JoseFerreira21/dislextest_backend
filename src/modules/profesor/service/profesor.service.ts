@@ -67,7 +67,7 @@ export class ProfesorService {
   findProfesorByUserId(idUsuario: number) {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
-        `select p.* 
+        `select p.id 
           from profesores p, entidades e 
         where p."entidadId" = e.id 
           and e."usuarioId" = ${idUsuario}`,

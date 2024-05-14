@@ -25,10 +25,15 @@ import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
 @Controller('resultadotest')
 export class ResultadoTestController {
   constructor(private resultadotestService: ResultadoTestService) {}
-
+ 
   @Get()
-  getResultadostest() {
+  getAll() {
     return this.resultadotestService.findAll();
+  }
+   
+  @Get('profesor/:idProfesor')
+  getResultadostest(@Param('idProfesor', ParseIntPipe) idProfesor: number) {
+    return this.resultadotestService.findAllAlumnosByProfesor(idProfesor);
   }
 
   @Get(':id')

@@ -21,33 +21,37 @@ export class ResultadoTestService {
     @Inject('PG') private clientPg: Client,
     @InjectRepository(ResultadoTest)
     private ResultadoTestRepository: Repository<ResultadoTest>,
-    //private entidadService : EntidadService,
-    //private profesorService : ProfesorService,
-  ){}
+  ) //private entidadService : EntidadService,
+  //private profesorService : ProfesorService,
+  {}
 
-    /*findAll() {
+  findAll() {
         return this.ResultadoTestRepository.find();
-      }*/
+      }
 
-    findAll() {
-      return new Promise((resolve, reject) => {
-        this.clientPg.query(
-          `SELECT *
-                          FROM v_resultados
-                          WHERE 1 = 1`,
-          (err, res) => {
-            if (err) {
-              reject(err);
-            }
-            resolve(res.rows);
-          },
-        );
-      });
-    }
+  findAllAlumnosByProfesor(idProfesor: number) {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `SELECT v.*
+          FROM v_resultados v, alumnos a
+         WHERE 1 = 1
+           and v.id = a.id 
+           and a."profesorId" = ${idProfesor}
+         order by a.id`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
 
   async findOne(id: number): Promise<ResultadoTest> {
     const resultadotest = await this.ResultadoTestRepository.findOne({
-      where: { id } , relations: ['resultadoitems'],
+      where: { id },
+      relations: ['resultadoitems'],
     });
     if (!resultadotest) {
       throw new NotFoundException(`Resultado test #${id} no existe`);
@@ -80,15 +84,4 @@ export class ResultadoTestService {
     }
     return this.ResultadoTestRepository.remove(index);
   }
-
-  /*
-  async getOrderByUser(id: number) {
-    const user = this.findOne(id);
-    return {
-      date: new Date(),
-      user,
-      products: await this.productService.findAll(),
-    };
-  }
-  */
 }
