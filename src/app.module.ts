@@ -16,12 +16,14 @@ import { enviroments } from './enviroments';
 import { AuthModule } from './auth/auth.module';
 import config from './config/config';
 import configSchema from './config/configSchema';
+import { DiccionarioModule } from './modules/diccionario/diccionario.module';
 
 @Module({
   imports: [
     HttpModule,
     AlumnoModule,
     AreaModule,
+    DiccionarioModule,
     EntidadModule,
     ProfesorModule,
     ResultadoTestModule,
