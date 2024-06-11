@@ -5,9 +5,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { ResultadoItem } from 'src/modules/resultadotestitem/entities/resultadoitem.entity';
+import { Ejercicios } from 'src/modules/ejercicio/entities/ejercicios.entity';
 
 @Entity()
 export class Areas {
@@ -16,14 +19,14 @@ export class Areas {
 
   @Column({ type: 'varchar', length: 100 })
   descripcion: string;
-  
+
   @Column({ type: 'int' })
   @Column()
-  "pEsperado": number;
-  
-  @OneToMany(()  => ResultadoItem, (resultadoitem) => resultadoitem.area)
+  'pEsperado': number;
+
+  @OneToMany(() => ResultadoItem, (resultadoitem) => resultadoitem.area)
   resultadoitems: ResultadoItem[];
-  
+
   @CreateDateColumn({
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
@@ -36,4 +39,6 @@ export class Areas {
   })
   updateAt: Date;
 
+  @OneToOne(() => Ejercicios, (ejercicio) => ejercicio.id)
+  ejercicio: Ejercicios;
 }

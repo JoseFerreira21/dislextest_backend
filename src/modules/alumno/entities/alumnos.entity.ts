@@ -14,6 +14,7 @@ import {
 import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
 import { Profesores } from 'src/modules/profesor/entities/profesores.entity';
 import { ResultadoTest } from 'src/modules/resultadotest/entities/resultadotest.entity';
+import { ResultadoEjercicios } from 'src/modules/resultadoejercicio/entities/resultadoejercicio.entity';
 
 @Entity()
 export class Alumnos {
@@ -52,4 +53,7 @@ export class Alumnos {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  @OneToMany(() => ResultadoEjercicios, (resultadoejercicio) => resultadoejercicio.ejercicio)
+  resultadoejercicio: ResultadoEjercicios[];
 }

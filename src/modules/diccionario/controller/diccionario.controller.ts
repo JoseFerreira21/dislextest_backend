@@ -47,9 +47,4 @@ export class DiccionarioController {
     return this.diccionarioService.findDiccionarioDiscriminacionPalabrasV2();
   }
 
-  //@Public()
-  @Get('discriminacion-palabras-v3')
-  getDiscriminacionPalabrasV3() {
-    return this.diccionarioService.findDiccionarioDiscriminacionPalabrasV3();
-  }
 }
