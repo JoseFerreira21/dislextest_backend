@@ -11,7 +11,8 @@ export class DiccionarioService {
   findDiccionarioFormarPalabras() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
-        `select e.id as "ejercicioId", 
+        `select a.id as "areaId", 
+                e.id as "ejercicioId", 
                 a.descripcion  as "descripcionEjercicio",
                 dfp."ejercicioOpcionesId",
                 dfp.palabra as palabra,
@@ -47,7 +48,8 @@ export class DiccionarioService {
           ORDER BY RANDOM() LIMIT 4),
         -- Paso 2: Selecciona 8 registros aleatorios de ese grupo
         random_records as
-        (select e.id,
+        (select a.id as aid, 
+                e.id,
                 a.descripcion,
                 eo.id as "ejercicioOpcionesId",
                 ddv.palabra,
@@ -65,13 +67,14 @@ export class DiccionarioService {
           ORDER BY a.id, e.id, a.descripcion, ddv.id, ddv.grupo, RANDOM())
 
         -- Paso 3: Construye el objeto JSON
-        SELECT rr.id as "ejercicioId",
+        SELECT rr.aid as "areaId", 
+              rr.id as "ejercicioId",
               rr.descripcion as "descripcionEjercicio",
               rr."ejercicioOpcionesId",
               json_agg(rr.palabra) AS palabra,
               rr.respuesta
           FROM random_records rr
-        GROUP BY rr.id, rr.descripcion, rr.respuesta, rr."ejercicioOpcionesId"`,
+        GROUP BY rr.aid, rr.id, rr.descripcion, rr.respuesta, rr."ejercicioOpcionesId"`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -91,18 +94,19 @@ export class DiccionarioService {
                     false                     as "estado",
                     ddv.grupo
               from diccionario_discriminacion_visual ddv)
-          select e.id as "ejercicioId",
+          select a.id as "areaId",  
+                 e.id as "ejercicioId",
                   a.descripcion as "descripcionEjercicio",
                   ddv."ejercicioOpcionesId",
                   json_agg(row_to_json(ddv)) AS palabras, eo.respuesta
             FROM ejercicios_opciones eo, 
                 diccionario_discriminacion_visual ddv,
                 areas a,
-                  ejercicios e
+                ejercicios e
             where eo.id = ddv."ejercicioOpcionesId"
               and a.id = e."areaId"
               and e.id = eo."ejercicioId"
-            GROUP BY e.id, ddv."ejercicioOpcionesId", a.descripcion, eo.respuesta
+            GROUP BY a.id, e.id, ddv."ejercicioOpcionesId", a.descripcion, eo.respuesta
             ORDER BY RANDOM() LIMIT 4`,
         (err, res) => {
           if (err) {
@@ -125,7 +129,8 @@ export class DiccionarioService {
             ORDER BY RANDOM() LIMIT 2),
           -- Paso 2: Selecciona 8 registros aleatorios de ese grupo
           random_records as
-          (select e.id,
+          (select a.id as aid, 
+                  e.id,
                   a.descripcion,
                   eo.id as "ejercicioOpcionesId",
                   ddp.palabra,
@@ -143,13 +148,14 @@ export class DiccionarioService {
             ORDER BY a.id, e.id, a.descripcion, ddp.id, ddp.grupo, RANDOM())
 
           -- Paso 3: Construye el objeto JSON
-          SELECT rr.id as "ejercicioId",
-                rr.descripcion as "descripcionEjercicio",
-                rr."ejercicioOpcionesId",
-                json_agg(rr.palabra) AS palabras,
-                rr.respuesta
+          SELECT rr.aid as "areaId",
+          		   rr.id as "ejercicioId",
+                 rr.descripcion as "descripcionEjercicio",
+                 rr."ejercicioOpcionesId",
+                 json_agg(rr.palabra) AS palabras,
+                 rr.respuesta
             FROM random_records rr
-          GROUP BY rr.id, rr.descripcion, rr.respuesta, rr."ejercicioOpcionesId"`,
+          GROUP BY rr.aid, rr.id, rr.descripcion, rr.respuesta, rr."ejercicioOpcionesId"`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -169,7 +175,8 @@ export class DiccionarioService {
                     false                     as "estado",
                     ddp.grupo
               from diccionario_discriminacion_palabras ddp )
-          select e.id as "ejercicioId",
+          select a.id as "areaId", 
+                 e.id as "ejercicioId",
                   a.descripcion as "descripcionEjercicio",
                   ddp."ejercicioOpcionesId",
                   json_agg(row_to_json(ddp)) AS palabras, eo.respuesta
@@ -180,7 +187,7 @@ export class DiccionarioService {
             where eo.id = ddp."ejercicioOpcionesId"
               and a.id = e."areaId"
               and e.id = eo."ejercicioId"
-            GROUP BY e.id, ddp."ejercicioOpcionesId", a.descripcion, eo.respuesta
+            GROUP BY a.id, e.id, ddp."ejercicioOpcionesId", a.descripcion, eo.respuesta
             ORDER BY RANDOM() LIMIT 2`,
         (err, res) => {
           if (err) {
