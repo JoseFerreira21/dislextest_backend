@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsDecimal } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateAreaDto {
@@ -9,6 +9,18 @@ export class CreateAreaDto {
   @ApiProperty()
   @IsNumber()
   "pEsperado": number;
+
+  @ApiProperty()
+  @IsDecimal()
+  'pMinimo': number;
+
+  @ApiProperty()
+  @IsString()
+  'observacionSR': string;
+
+  @ApiProperty()
+  @IsString()
+  'observacionR': string;
 
 }
 

@@ -20,7 +20,7 @@ export class AreaService {
   async findOne(id: number): Promise<Areas> {
     const area = await this.areaRepository.findOne({
       where: { id: id },
-      relations: ['resultadoitems'],
+      //relations: ['resultadoitems'],
     });
     if (!area) {
       throw new NotFoundException(`Area #${id} no existe`);

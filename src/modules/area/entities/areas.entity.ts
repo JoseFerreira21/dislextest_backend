@@ -21,8 +21,16 @@ export class Areas {
   descripcion: string;
 
   @Column({ type: 'int' })
-  @Column()
   'pEsperado': number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  'pMinimo': number;
+
+  @Column({ type: 'varchar', length: 200 })
+  'observacionSR': string;
+
+  @Column({ type: 'varchar', length: 200 })
+  'observacionR': string;
 
   @OneToMany(() => ResultadoItem, (resultadoitem) => resultadoitem.area)
   resultadoitems: ResultadoItem[];
