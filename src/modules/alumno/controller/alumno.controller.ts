@@ -45,6 +45,11 @@ export class AlumnoController {
     return this.alumnosService.findAlumnoId(idEntidad);
   }*/
  
+  @Get('ci/:ci')
+  getAlumnoIdByCI(@Param('ci', ParseIntPipe) ci: string) {
+    return this.alumnosService.findAlumnoIdByCI(ci);
+  }
+
   @Get('profesor/:idProfesor')
   getAlumnosByProfesor(@Param('idProfesor', ParseIntPipe) idProfesor: number) {
     return this.alumnosService.findAllByProfesor(idProfesor);

@@ -117,16 +117,42 @@ export class AlumnoService {
                                 e."nroDocumento" 
                            FROM alumnos a, entidades e
                           WHERE 1 = 1
-                           and a."profesorId" = ${idProfesor}
+                           and a."profesorId" = $1
                            and a."entidadId" = e.id
                            and e."tipoEntidad" = 'AL'  
                         order by a.id`,
+        [idProfesor],
         (err, res) => {
           if (err) {
-            reject(err);
+            return reject(err);
+          }
+          if (!res || !res.rows) {
+            return reject(new Error('Unexpected response format from the database.'));
           }
           resolve(res.rows);
-        },
+        }
+      );
+    });
+  }
+
+  findAlumnoIdByCI(ci: string) {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `SELECT a.id
+         FROM alumnos a, entidades e
+         WHERE a."entidadId" = e.id
+           AND TRIM(e."nroDocumento") = TRIM($1)
+           AND e."tipoEntidad" = 'AL'`,
+        [ci],
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!res || !res.rows) {
+            return reject(new Error('Unexpected response format from the database.'));
+          }
+          resolve(res.rows);
+        }
       );
     });
   }
