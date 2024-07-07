@@ -146,7 +146,7 @@ export class init1719365524021 implements MigrationInterface {
                                 VALUES
                                     ('gtao', 1),
                                     ('prreo', 2),
-                                    ('loén', 3),
+                                    ('león', 3),
                                     ('spao', 4),
                                     ('rolo', 5),
                                     ('nomo', 6),
@@ -194,7 +194,7 @@ export class init1719365524021 implements MigrationInterface {
                                     ('estante', 3, 19),
                                     ('cabello', 4, 20),
                                     ('bello', 4, 20),
-                                    ('cabeza', 4, 20), 
+                                    ('cebolla', 4, 20), 
                                     ('caballo', 4, 20)`); 
 
         await queryRunner.query(`CREATE or replace VIEW v_resultados AS
