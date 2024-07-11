@@ -1,5 +1,6 @@
-import { IsString, IsNumber, IsNotEmpty, IsBoolean } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsBoolean, IsArray, ValidateNested } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateResultadoEjercicioDto {
   @ApiProperty()
@@ -25,6 +26,14 @@ export class CreateResultadoEjercicioDto {
   @ApiProperty()
   @IsNumber()
   "resultadoItemId": number;
+}
+
+export class CreateResultadosEjercicioDto {
+  @ApiProperty({ type: [CreateResultadoEjercicioDto] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateResultadoEjercicioDto)
+  resultados: CreateResultadoEjercicioDto[];
 }
 
 export class UpdateResultadoEjercicioDto extends PartialType(CreateResultadoEjercicioDto) {}

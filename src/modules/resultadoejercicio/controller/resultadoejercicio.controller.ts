@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { ResultadoEjercicioService } from '../service/resultadoejercicio.service'; 
-import { CreateResultadoEjercicioDto } from '../dtos/resultadoejercicio.dto'; 
+import { CreateResultadoEjercicioDto, CreateResultadosEjercicioDto } from '../dtos/resultadoejercicio.dto'; 
 import { ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
@@ -27,4 +27,8 @@ export class ResultadoEjercicioController {
     return this.resultadosEjercicioService.create(payload);
   }
 
+  @Post('bulk')
+  createMany(@Body() payload: CreateResultadosEjercicioDto) {
+    return this.resultadosEjercicioService.createMany(payload.resultados);
+  }
 }
