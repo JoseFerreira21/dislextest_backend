@@ -14,14 +14,14 @@ import { DiccionarioService } from '../service/diccionario.service';
 @Controller('diccionario')
 export class DiccionarioController {
   constructor(private diccionarioService: DiccionarioService) {}
-  //-------------------------FORMAR PALABRAS-----------------------------//
+  //#1-------------------------FORMAR PALABRAS-----------------------------//
   //@Public()
   @Get('formar-palabras')
   getFormarPalabras() {
     return this.diccionarioService.findDiccionarioFormarPalabras();
   }
   
-  //-------------------------DISCRIMINACION VISUAL-----------------------------//
+  //#2-------------------------DISCRIMINACION VISUAL-----------------------------//
   //@Public()
   @Get('discriminacion-visual')
   getDiscriminacionVisual() {
@@ -34,7 +34,7 @@ export class DiccionarioController {
     return this.diccionarioService.findDiccionarioDiscriminacionVisualV2();
   }
 
-  //-------------------------DISCRIMINACION PALABRAS-----------------------------//
+  //#3-------------------------DISCRIMINACION PALABRAS-----------------------------//
   //@Public()
   @Get('discriminacion-palabras')
   getDiscriminacionPalabras() {
@@ -45,6 +45,19 @@ export class DiccionarioController {
   @Get('discriminacion-palabras-v2')
   getDiscriminacionPalabrasV2() {
     return this.diccionarioService.findDiccionarioDiscriminacionPalabrasV2();
+  }
+
+  ///#4-------------------------ENCONTRAR LETRAS EN PALABRAS-----------------------------//
+  //@Public()
+  @Get('encontrar-letras-en-palabras')
+  getEncontrarLetras() {
+    return this.diccionarioService.findDiccionarioEncontrarLetras();
+  }
+
+  //@Public()
+  @Get('encontrar-letras-en-palabras-v2')
+  getEncontrarLetrasV2() {
+    return this.diccionarioService.findDiccionarioEncontrarLetrasV2();
   }
 
 }

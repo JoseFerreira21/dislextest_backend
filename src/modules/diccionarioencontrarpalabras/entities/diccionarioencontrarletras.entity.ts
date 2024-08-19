@@ -7,14 +7,20 @@ import {
     Column,
   } from 'typeorm';
 
-   //#1 
+   //#4 
   @Entity()
-  export class DiccionarioFormarPalabras {
+  export class DiccionarioEncontrarLetras {
     @PrimaryGeneratedColumn()
     id: number;
   
     @Column({ type: 'varchar', length: 30})
     palabra: string;
+
+    @Column({ type: 'int'})
+    grupo: number;
+
+    @Column({ type: 'int'})
+    cantidad: number; 
     
     @ManyToOne(() => EjerciciosOpciones, (ejercicioOpciones) => ejercicioOpciones.id)
     @JoinColumn()

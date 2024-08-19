@@ -23,6 +23,7 @@ import { DiccionarioFormarPalabrasModule } from './modules/diccionarioformarpala
 import { ResultadoEjercicioModule } from './modules/resultadoejercicio/resultadoejercicio.module';
 import { DiccionarioDiscriminacionVisualModule } from './modules/diccionariodiscriminacionvisual/diccionariodiscriminacionvisual.module';
 import { DiccionarioDiscriminacionPalabraModule } from './modules/diccionariodiscriminacionpalabra/diccionariodiscriminacionpalabras.module';
+import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrarpalabras/diccionarioencontrarletras.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { DiccionarioDiscriminacionPalabraModule } from './modules/diccionariodis
     DiccionarioFormarPalabrasModule,
     DiccionarioDiscriminacionVisualModule,
     DiccionarioDiscriminacionPalabraModule,
+    DiccionarioEncontrarLetrasModule,
     DatabaseModule,
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV] || '.env',

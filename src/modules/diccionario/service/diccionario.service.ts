@@ -199,5 +199,138 @@ export class DiccionarioService {
     });
   }
 
+  //#4-------------------------ENCONTRAR LETRAS EN PALABRAS-----------------------------//
+  findDiccionarioEncontrarLetras() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        ` WITH random_group_1 AS (
+    SELECT "ejercicioOpcionesId"
+    FROM diccionario_encontrar_letras
+    WHERE cantidad = 3
+    GROUP BY "ejercicioOpcionesId"
+    HAVING COUNT(*) >= 3
+    ORDER BY RANDOM()
+    LIMIT 1),
+            random_group_2 AS (
+                SELECT "ejercicioOpcionesId"
+                FROM diccionario_encontrar_letras
+                WHERE cantidad = 4
+                GROUP BY "ejercicioOpcionesId"
+                HAVING COUNT(*) >= 3
+                ORDER BY RANDOM()
+                LIMIT 1
+            )
+            SELECT a.id as "areaId", 
+                  e.id as "ejercicioId", 
+                  a.descripcion  as "descripcionEjercicio",
+                del."ejercicioOpcionesId",
+                  del.palabra as palabra,
+                  palabras_a_letras_v2(del.palabra, eo.respuesta) as letras,
+                  palabras_a_letras_v2(repeat(' ', length(del.palabra)), '.') as "letrasRespuesta",
+                  eo.respuesta as respuesta
+            FROM random_group_1 rg,
+              diccionario_encontrar_letras del,
+              areas a, 
+              ejercicios e, 
+                ejercicios_opciones eo	
+            WHERE del."ejercicioOpcionesId" = rg."ejercicioOpcionesId"
+              and a.id  = e."areaId"  
+              and e.id = eo."ejercicioId"    
+              and eo.id = del."ejercicioOpcionesId" 
+            union all 
+            SELECT a.id as "areaId", 
+                e.id as "ejercicioId", 
+                a.descripcion  as "descripcionEjercicio",
+                del."ejercicioOpcionesId",
+                  del.palabra as palabra,
+                  palabras_a_letras_v2(del.palabra, eo.respuesta) as letras,
+                  palabras_a_letras_v2(repeat(' ', length(del.palabra)), '.') as "letrasRespuesta",
+                  eo.respuesta as respuesta
+            FROM random_group_2 rg,
+              diccionario_encontrar_letras del,
+              areas a, 
+              ejercicios e, 
+                ejercicios_opciones eo	
+            WHERE del."ejercicioOpcionesId" = rg."ejercicioOpcionesId"
+              and a.id  = e."areaId"  
+              and e.id = eo."ejercicioId"    
+              and eo.id = del."ejercicioOpcionesId"`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
+  findDiccionarioEncontrarLetrasV2() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        ` WITH random_group_1 AS (
+          SELECT "ejercicioOpcionesId"
+          FROM diccionario_encontrar_letras
+          WHERE cantidad = 3
+          GROUP BY "ejercicioOpcionesId"
+          HAVING COUNT(*) >= 3
+          ORDER BY RANDOM()
+          LIMIT 1
+      ), 
+      random_group_2 AS (
+          SELECT "ejercicioOpcionesId"
+          FROM diccionario_encontrar_letras
+          WHERE cantidad = 4
+          GROUP BY "ejercicioOpcionesId"
+          HAVING COUNT(*) >= 3
+          ORDER BY RANDOM()
+          LIMIT 1
+      ),
+      diccionario_encontrar_letras as (
+          select del."ejercicioOpcionesId",
+                  del.palabra,
+                  palabras_a_letras_v2(del.palabra, eo.respuesta) as letras,
+                  palabras_a_letras_v2(repeat(' ', length(del.palabra)), '.') as "letrasRespuesta",
+                  del.grupo
+            from diccionario_encontrar_letras del,
+                 ejercicios_opciones eo, 
+            random_group_1 rg
+            where del."ejercicioOpcionesId" = rg."ejercicioOpcionesId" 
+              and eo.id = del."ejercicioOpcionesId"
+            union all  
+            select del."ejercicioOpcionesId",
+                   del.palabra,
+                   palabras_a_letras_v2(del.palabra, eo.respuesta) as letras,
+                   palabras_a_letras_v2(repeat(' ', length(del.palabra)), '.') as "letrasRespuesta",
+                   del.grupo
+            from diccionario_encontrar_letras del,
+                 ejercicios_opciones eo, 
+            random_group_2 rg
+            where del."ejercicioOpcionesId" = rg."ejercicioOpcionesId" 
+              and eo.id = del."ejercicioOpcionesId")
+        select a.id as "areaId",  
+              e.id as "ejercicioId",
+              a.descripcion as "descripcionEjercicio",
+              del."ejercicioOpcionesId",
+              json_agg(row_to_json(del)) AS palabras, 
+              eo.respuesta
+      from ejercicios_opciones eo, 
+           diccionario_encontrar_letras del,
+           areas a,
+           ejercicios e
+      where eo.id = del."ejercicioOpcionesId"
+        and a.id = e."areaId"
+        and e.id = eo."ejercicioId"
+      group by a.id, e.id, del."ejercicioOpcionesId", a.descripcion, eo.respuesta`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
  
 }

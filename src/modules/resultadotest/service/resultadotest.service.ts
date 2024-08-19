@@ -33,11 +33,12 @@ export class ResultadoTestService {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
         `SELECT v.*
-          FROM v_resultados v, alumnos a
-         WHERE 1 = 1
-           and v.id = a.id 
-           and a."profesorId" = ${idProfesor}
-         order by a.id`,
+           FROM v_resultados v, alumnos a, profesores p 
+          WHERE 1 = 1
+            and v.id_alumno = a.id 
+            and a."profesorId" = p.id
+            and a."profesorId" = ${idProfesor}
+         order by v.nombre_alumno, v.id_resultadotest `,
         (err, res) => {
           if (err) {
             reject(err);
