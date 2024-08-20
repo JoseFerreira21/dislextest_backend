@@ -31,4 +31,13 @@ export class ResultadoEjercicioController {
   createMany(@Body() payload: CreateResultadosEjercicioDto) {
     return this.resultadosEjercicioService.createMany(payload.resultados);
   }
+
+  @Get(':alumnoId/:itemId')
+  getTestDetails(
+    @Param('alumnoId', ParseIntPipe) alumnoId: number, 
+    @Param('itemId', ParseIntPipe) itemId: number
+  ) {
+    return this.resultadosEjercicioService.findTestDetails(alumnoId, itemId);
+  }
+
 }

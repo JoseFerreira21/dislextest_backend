@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -11,10 +11,12 @@ import { Ejercicios } from 'src/modules/ejercicio/entities/ejercicios.entity';
 import { EjerciciosOpciones } from 'src/modules/ejercicioopcion/entities/ejercicioopcion.entity';
 import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
 
+import { Client } from 'pg';
+
 @ApiTags()
 @Injectable()
 export class ResultadoEjercicioService {
-  constructor(
+  constructor(@Inject('PG') private clientPg: Client,
     @InjectRepository(ResultadoEjercicios) private resultadoEjercicioRepository: Repository<ResultadoEjercicios>,
     @InjectRepository(Ejercicios) private ejerciciosRepository: Repository<Ejercicios>,
     @InjectRepository(EjerciciosOpciones) private ejerciciosOpcionesRepository: Repository<EjerciciosOpciones>,
@@ -56,4 +58,32 @@ export class ResultadoEjercicioService {
     }
     return results;
   }
+
+  findTestDetails(alumnoId: number, itemId: number) {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `select eo.respuesta as "respuestaCorrectaEjercicio",
+                re."respuestaRespondida"  as "respuestaHechaAlumno",
+                re.acierto
+            from  ejercicios e, 
+                ejercicios_opciones eo,
+                resultado_ejercicios re
+          where  e.id = eo."ejercicioId"
+              and e.id = re."ejercicioId"  
+              and eo.id = re."ejercicioOpcionesId"  
+              and re."alumnoId"  = $1
+              and re."resultadoitemId" = $2 `,
+              [alumnoId, itemId],
+              (err, res) => {
+                if (err) {
+                  return reject(err);
+                }
+                if (!res || !res.rows) {
+                  return reject(new Error('Unexpected response format from the database.'));
+                }
+                resolve(res.rows);
+              }
+            );
+          });
+        }
 }
