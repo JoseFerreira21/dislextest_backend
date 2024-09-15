@@ -12,23 +12,21 @@ import {
 } from '@nestjs/common';
 
 import { UsuarioService } from '../service/usuario.service';
-import {
-  CreateUsuarioDto,
-  UpdateUsuarioDto,
-} from '../dtos/usuario.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { CreateUsuarioDto, UpdateUsuarioDto } from '../dtos/usuario.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { Public } from '../../../auth/decorators/public.decorator'
+import { Public } from '../../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
 import { UsuarioEmailDto } from '../dtos/usuarioemail.dto';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
+//@ApiBearerAuth()
+//@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('usuario')
-//@UseGuards(JwtAuthGuard)
 @Controller('usuario')
 export class UserProfileController {
   constructor(private usuarioService: UsuarioService) {}
 
-  @Public()
   @Get()
   getUsuarios() {
     return this.usuarioService.findAll();
@@ -40,7 +38,6 @@ export class UserProfileController {
   }
 
   
-  @Public()
   @Post()
   create(@Body() payload: CreateUsuarioDto) {
     return this.usuarioService.create(payload);
@@ -62,13 +59,11 @@ export class UserProfileController {
   @HttpCode(201)
   @Post('is-available')
   isAvailable(@Body('email') email: string): any {
-   
     const userEmail = this.usuarioService.findByMail(email);
-   
-   if (!userEmail) {
-    return {message: "true"};
+
+    if (!userEmail) {
+      return { message: 'true' };
     }
-    return {message: "false"};
-  
+    return { message: 'false' };
   }
 }

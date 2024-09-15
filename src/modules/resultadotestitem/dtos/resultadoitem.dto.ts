@@ -14,6 +14,10 @@ export class CreateResultadoItemDto {
   @IsString()
   observacion: string;
 
+  @ApiProperty({description: 'tiempo empleado en el ejercicio test'})
+  @IsNumber()
+  tiempoEmpleado: number;
+
   @ApiProperty({description: 'id del area'})
   @IsNumber()
   readonly AreaId: number;

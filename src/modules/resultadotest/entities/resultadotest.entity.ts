@@ -20,11 +20,14 @@ export class ResultadoTest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 1, nullable: true})
+  @Column({ type: 'varchar', length: 2, nullable: true})
   indicador: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   observacion: string;
+
+  @Column({ type: 'integer'})
+  tiempoTotal: number;
 
   @Column({ type: 'int' })
   alumnoId: number;

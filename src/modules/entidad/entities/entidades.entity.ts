@@ -30,6 +30,9 @@ export class Entidades {
   @Column({type: 'date', nullable: true})
   fechaNacimiento: Date;
 
+  @Column({ type: 'varchar', length: 1, nullable: true })
+  sexo: string | null;
+
   @Column({ type: 'varchar', length: 20, nullable: true })
   telefono: string;
 

@@ -35,9 +35,6 @@ export class Profesores {
   @JoinColumn()
   entidad: Entidades;
 
-@Column({ type: 'varchar', length: 50, nullable: true })
-  curso: string;
-  
   @OneToMany(()  => ResultadoTest, (resultadotest) => resultadotest.profesor)
   proferesultadotest: ResultadoTest[];
 

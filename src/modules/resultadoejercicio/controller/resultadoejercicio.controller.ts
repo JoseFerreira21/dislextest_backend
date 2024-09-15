@@ -4,20 +4,23 @@ import {
   Param,
   Post,
   Body,
-  Put,
-  Delete,
   ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
 
-import { ResultadoEjercicioService } from '../service/resultadoejercicio.service'; 
-import { CreateResultadoEjercicioDto, CreateResultadosEjercicioDto } from '../dtos/resultadoejercicio.dto'; 
-import { ApiTags } from '@nestjs/swagger';
+import { ResultadoEjercicioService } from '../service/resultadoejercicio.service';
+import {
+  CreateResultadoEjercicioDto,
+  CreateResultadosEjercicioDto,
+} from '../dtos/resultadoejercicio.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('resultadoejercicio')
-//@UseGuards(JwtAuthGuard)
 @Controller('resultadoejercicio')
 export class ResultadoEjercicioController {
   constructor(private resultadosEjercicioService: ResultadoEjercicioService) {}
@@ -34,10 +37,9 @@ export class ResultadoEjercicioController {
 
   @Get(':alumnoId/:itemId')
   getTestDetails(
-    @Param('alumnoId', ParseIntPipe) alumnoId: number, 
-    @Param('itemId', ParseIntPipe) itemId: number
+    @Param('alumnoId', ParseIntPipe) alumnoId: number,
+    @Param('itemId', ParseIntPipe) itemId: number,
   ) {
     return this.resultadosEjercicioService.findTestDetails(alumnoId, itemId);
   }
-
 }

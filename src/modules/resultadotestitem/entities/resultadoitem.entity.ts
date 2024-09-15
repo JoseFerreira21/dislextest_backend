@@ -28,6 +28,9 @@ export class ResultadoItem {
   @Column({ type: 'varchar', length: 255 })
   observacion: string;
 
+  @Column({ type: 'integer'})
+  tiempoEmpleado: number;
+
   @ManyToOne(() => Areas, (area) => area.resultadoitems)
   area: Areas;
 

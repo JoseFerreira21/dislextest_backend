@@ -21,6 +21,15 @@ export class Alumnos {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  grado: string;
+
+  @Column({ type: 'int' })
+  año: number;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  institucion: string;
+
   @Column({ type: 'int' })
   entidadId: number;
 

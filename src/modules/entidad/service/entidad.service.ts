@@ -14,36 +14,46 @@ import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
 @Injectable()
 export class EntidadService {
   constructor(
-    @InjectRepository(Entidades) private entidadRepository: Repository<Entidades>,
-    @InjectRepository(Usuarios) private usuariosRepository: Repository<Usuarios>,
+    @InjectRepository(Entidades)
+    private entidadRepository: Repository<Entidades>,
+    @InjectRepository(Usuarios)
+    private usuariosRepository: Repository<Usuarios>,
     //@InjectRepository(Alumnos) private alumnoRepository: Repository<Alumnos>,
-    @Inject('PG') private clientPg: Client,
-    //private alumnoRepository : AlumnoService,
-    ) {}
+    @Inject('PG') private clientPg: Client, //private alumnoRepository : AlumnoService,
+  ) {}
 
   findAll() {
     return this.entidadRepository.find();
   }
 
-  async findOne(id: number) : Promise<Entidades>{
-    const entidad = await this.entidadRepository.findOne(id,{ where: { id: id } });
+  async findOne(id: number): Promise<Entidades> {
+    const entidad = await this.entidadRepository.findOne(id, {
+      where: { id: id },
+    });
     if (!entidad) {
       throw new NotFoundException(`Entidad #${id} no existe`);
     }
     return entidad;
   }
-  
-  findOneUserId(id: number){
+
+  findOneByUserId(id: number) {
     return new Promise((resolve, reject) => {
-      this.clientPg.query( `select *
-                             from entidades e
-                            where 1 = 1
-                              and e."usuarioId" = ${id}`,
+      this.clientPg.query(
+        `select *
+            from entidades e
+          where 1 = 1
+            and e."usuarioId" = $1`,
+        [id],
         (err, res) => {
           if (err) {
-            reject(err);
+            return reject(err);
           }
-          resolve(res.rows);
+          if (!res || !res.rows) {
+            return reject(
+              new Error('Unexpected response format from the database.'),
+            );
+          }
+          resolve(res.rows[0]); // Devuelve solo el primer resultado
         },
       );
     });

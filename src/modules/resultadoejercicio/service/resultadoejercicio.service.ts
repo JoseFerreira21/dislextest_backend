@@ -62,15 +62,21 @@ export class ResultadoEjercicioService {
   findTestDetails(alumnoId: number, itemId: number) {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
-        `select eo.respuesta as "respuestaCorrectaEjercicio",
-                re."respuestaRespondida"  as "respuestaHechaAlumno",
-                re.acierto
-            from  ejercicios e, 
-                ejercicios_opciones eo,
-                resultado_ejercicios re
-          where  e.id = eo."ejercicioId"
-              and e.id = re."ejercicioId"  
-              and eo.id = re."ejercicioOpcionesId"  
+        `select to_char(
+                    '00:00'::time + INTERVAL '1 second' * ri."tiempoEmpleado",
+                    'MI:SS'
+                ) as "tiempoEmpleado",
+            eo.respuesta as "respuestaCorrectaEjercicio",
+                        re."respuestaRespondida"  as "respuestaHechaAlumno",
+                        re.acierto
+                    from  ejercicios e, 
+                        ejercicios_opciones eo,
+                        resultado_ejercicios re,
+                        resultado_item ri 
+                  where  e.id = eo."ejercicioId"
+                      and e.id = re."ejercicioId"  
+                      and eo.id = re."ejercicioOpcionesId"  
+                      and re."resultadoitemId" = ri.id  
               and re."alumnoId"  = $1
               and re."resultadoitemId" = $2 `,
               [alumnoId, itemId],
