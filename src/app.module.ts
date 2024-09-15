@@ -1,4 +1,4 @@
-import { Module , HttpModule, HttpService } from '@nestjs/common';
+import { Module, HttpModule, HttpService } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AlumnoModule } from './modules/alumno/alumno.module';
@@ -12,10 +12,10 @@ import { DatabaseModule } from './database/database.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { enviroments } from './enviroments';
+import { enviroments } from './enviroments'; // Archivo donde configuramos diferentes entornos (dev, prod, etc.)
+import config from './config/config'; // Archivo de configuración personalizado
+import configSchema from './config/configSchema'; // Archivo con el esquema de validación de las variables de entorno
 import { AuthModule } from './auth/auth.module';
-import config from './config/config';
-import configSchema from './config/configSchema';
 import { DiccionarioModule } from './modules/diccionario/diccionario.module';
 import { EjercicioModule } from './modules/ejercicio/ejercicio.module';
 import { EjercicioOpcionModule } from './modules/ejercicioopcion/ejercicioopcion.module';
@@ -44,12 +44,15 @@ import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrar
     DiccionarioDiscriminacionPalabraModule,
     DiccionarioEncontrarLetrasModule,
     DatabaseModule,
+
+    // Configuración del módulo de configuración con diferentes entornos
     ConfigModule.forRoot({
-      envFilePath: enviroments[process.env.NODE_ENV] || '.env',
-      load: [config],
-      isGlobal: true,
-      validationSchema: configSchema
+      envFilePath: enviroments[process.env.NODE_ENV] || '.env', // Cargamos el archivo de entorno adecuado
+      load: [config], // Cargamos configuraciones adicionales desde `config.ts`
+      isGlobal: true, // Hacemos las variables disponibles globalmente
+      validationSchema: configSchema // Validamos las variables con `configSchema`
     }),
+
     AuthModule,
   ],
   controllers: [AppController],
