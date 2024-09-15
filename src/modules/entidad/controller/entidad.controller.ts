@@ -12,18 +12,20 @@ import {
 
 import { EntidadService } from '../service/entidad.service';
 import { CreateEntidadDto, UpdateEntidadDto } from '../dtos/entidad.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('entidad')
-@UseGuards(JwtAuthGuard)
 @Controller('entidad')
 export class EntidadController {
   constructor(private entidadesService: EntidadService) {}
 
   @Get()
-  getBrands() {
+  getEntidades() {
     return this.entidadesService.findAll();
   }
 
@@ -32,9 +34,9 @@ export class EntidadController {
     return this.entidadesService.findOne(id);
   }
 
-  @Get('/usuario/:id')
-  getOneUserId(@Param('id', ParseIntPipe) id: number) {
-    return this.entidadesService.findOneUserId(id);
+  @Get('/usuario/:idUsuario')
+  getOneUserId(@Param('idUsuario', ParseIntPipe) idUsuario: number) {
+    return this.entidadesService.findOneByUserId(idUsuario);
   }
 
   @Post()
@@ -46,7 +48,6 @@ export class EntidadController {
   update(@Param('id') id: number, @Body() payload: UpdateEntidadDto) {
     return this.entidadesService.update(+id, payload);
   }
-  
 
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
@@ -55,5 +56,4 @@ export class EntidadController {
       message: `Entidad #${id} eliminada`,
     };
   }
-
 }

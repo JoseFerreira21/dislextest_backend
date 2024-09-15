@@ -6,6 +6,7 @@ import {
   IsDate,
   IsPositive,
   IsDateString,
+  IsIn,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
@@ -30,6 +31,10 @@ export class CreateEntidadDto {
   fechaNacimiento: Date;
 
   @ApiProperty()
+  @IsIn(['M', 'F'])
+  sexo: string;
+
+  @ApiProperty()
   @IsString()
   telefono: string;
 
@@ -42,8 +47,6 @@ export class CreateEntidadDto {
   nroDocumento: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsPositive()
   @IsNumber()
   @IsOptional()
   usuarioId: number;

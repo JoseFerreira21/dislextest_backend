@@ -15,19 +15,31 @@ import { Profesores } from 'src/modules/profesor/entities/profesores.entity';
 export class AlumnoService {
   constructor(
     @InjectRepository(Alumnos) private alumnoRepository: Repository<Alumnos>,
-    @InjectRepository(Entidades) private entidadRepository: Repository<Entidades>,
-    @InjectRepository(Profesores) private profesorRepository: Repository<Profesores>,
+    @InjectRepository(Entidades)
+    private entidadRepository: Repository<Entidades>,
+    @InjectRepository(Profesores)
+    private profesorRepository: Repository<Profesores>,
     @Inject('PG') private clientPg: Client,
   ) {}
 
-  /*findAll() {
+  findAll() {
     return this.alumnoRepository.find();
-  }*/
+  }
 
   async findOne(id: number): Promise<Alumnos> {
     const alumno = await this.alumnoRepository.findOne(id, {
-      relations: ['entidad', 'profesor'],
+      //relations: ['entidad'],
       where: { id: id },
+    });
+    if (!alumno) {
+      throw new NotFoundException(`Alumno #${id} no existe`);
+    }
+    return alumno;
+  }
+
+  async findAlumnoId(id: number): Promise<Alumnos> {
+    const alumno = await this.alumnoRepository.findOne(id, {
+      where: { entidadId: id },
     });
     if (!alumno) {
       throw new NotFoundException(`Alumno #${id} no existe`);
@@ -42,12 +54,12 @@ export class AlumnoService {
       const entidad = await this.entidadRepository.findOne(data.entidadId);
       newAlumno.entidad = entidad; //relación uno a uno
     }
-    
+
     if (data.profesorId) {
-      const profesor = await this.profesorRepository.find({
-        id: In(data.profesorId),
+      const profesor = await this.profesorRepository.findOne({
+        id: data.profesorId,
       });
-      newAlumno.profesor = profesor; //relación muchos a muchos
+      newAlumno.profesor = profesor;
     }
 
     return this.alumnoRepository.save(newAlumno);
@@ -70,7 +82,7 @@ export class AlumnoService {
     return this.alumnoRepository.remove(index);
   }
 
-  findAll() {
+  findAllAlumns() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
         `SELECT a.id,
@@ -92,16 +104,90 @@ export class AlumnoService {
       );
     });
   }
-  /*
-  finOneById(id: number) { // 👈 new method
+
+  findAllByProfesor(idProfesor: number) {
     return new Promise((resolve, reject) => {
-      this.clientPg.query(`SELECT * FROM alumno WHERE id = #${id}`, (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res.rows);
-      });
+      this.clientPg.query(
+        `SELECT a.id as "alumnoId", 
+                                e.id,
+                                e."tipoEntidad", 
+                                e.nombre, 
+                                e.apellido, 
+                                TO_CHAR("fechaNacimiento", 'DD/MM/YYYY') as "fechaNacimiento",
+                                e.sexo,
+                                date_part('year', now()) - date_part('year', e."fechaNacimiento") ||
+                                ' años' as edad,
+                                e.telefono, 
+                                e.direccion,
+                                e."nroDocumento",
+                                a.grado,
+                                a.año,
+                                a.institucion 
+                           FROM alumnos a, entidades e
+                          WHERE 1 = 1
+                           and a."profesorId" = $1
+                           and a."entidadId" = e.id
+                           and e."tipoEntidad" = 'AL'  
+                        order by a.id`,
+        [idProfesor],
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!res || !res.rows) {
+            return reject(
+              new Error('Unexpected response format from the database.'),
+            );
+          }
+          resolve(res.rows);
+        },
+      );
     });
   }
-  */
+
+  findAlumnoIdByCI(ci: string) {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `SELECT a.id
+         FROM alumnos a, entidades e
+         WHERE a."entidadId" = e.id
+           AND TRIM(e."nroDocumento") = TRIM($1)
+           AND e."tipoEntidad" = 'AL'`,
+        [ci],
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!res || !res.rows) {
+            return reject(
+              new Error('Unexpected response format from the database.'),
+            );
+          }
+          resolve(res.rows[0]); // Devuelve solo el primer resultado
+        },
+      );
+    });
+  }
+
+  findAlumnoIdByEntidadID(EntidadId: number) {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `SELECT a.id, a.grado, a.año, a.institucion, a."entidadId", a."profesorId"
+         FROM alumnos a
+         WHERE a."entidadId" = $1`,
+        [EntidadId],
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!res || !res.rows || res.rows.length === 0) {
+            return reject(
+              new Error('No se encontró el alumno con el ID especificado.'),
+            );
+          }
+          resolve(res.rows[0]); // Devuelve el primer resultado, que debe contener el ID del alumno
+        },
+      );
+    });
+  }
 }

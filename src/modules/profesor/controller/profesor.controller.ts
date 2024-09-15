@@ -12,19 +12,20 @@ import {
 
 import { ProfesorService } from '../service/profesor.service';
 import { CreateProfesorDto, UpdateProfesorDto } from '../dtos/profesor.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { Public } from '../../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('profesor')
-//@UseGuards(JwtAuthGuard)
 @Controller('profesor')
 export class ProfesorController {
   constructor(private profesorService: ProfesorService) {}
 
   @Get()
-  getProducts() {
+  getAll() {
     return this.profesorService.findAll();
   }
 
@@ -33,17 +34,10 @@ export class ProfesorController {
     return this.profesorService.findOne(id);
   }
 
-  //Para peticiones de varios productos.
-  //http://localhost:3000/products?limit=1000&offset=1500
-  //http://localhost:3000/products?brand=xyz
-  /*@Get('profesor')
-  getProducts(
-    @Query('limit') limit: 100,
-    @Query('offset') offset: 0,
-    @Query('brand') brand: string,
-  ) {
-    return `products: limit => ${limit}, offset => ${offset}, brand => ${brand}`;
-  }*/
+  @Get('usuario/:idUsuario')
+  getProfesorByUserId(@Param('idUsuario', ParseIntPipe) idUsuario: number) {
+    return this.profesorService.findProfesorByUserId(idUsuario);
+  }
 
   @Post()
   create(@Body() payload: CreateProfesorDto) {

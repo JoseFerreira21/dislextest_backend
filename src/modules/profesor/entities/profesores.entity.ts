@@ -23,17 +23,18 @@ export class Profesores {
   @Column({ type: 'int' })
   entidadId: number;
   
+  
+  @OneToMany(
+    () => Alumnos,
+    (alumno) => alumno.profesor,
+    //{ eager: true, cascade: true, onDelete: 'CASCADE' },
+  )
+  alumno: Alumnos[];
+  
   @OneToOne(() => Entidades, (entidad) => entidad.profesor)
   @JoinColumn()
   entidad: Entidades;
 
-  @Column({ type: 'varchar', length: 50 })
-  curso: string;
-  
-  @ManyToMany(() => Alumnos, (alumno) => alumno.profesor)
-  @JoinTable()
-  alumnos: Alumnos[];
-  
   @OneToMany(()  => ResultadoTest, (resultadotest) => resultadotest.profesor)
   proferesultadotest: ResultadoTest[];
 

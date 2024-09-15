@@ -16,17 +16,33 @@ import { enviroments } from './enviroments';
 import { AuthModule } from './auth/auth.module';
 import config from './config/config';
 import configSchema from './config/configSchema';
+import { DiccionarioModule } from './modules/diccionario/diccionario.module';
+import { EjercicioModule } from './modules/ejercicio/ejercicio.module';
+import { EjercicioOpcionModule } from './modules/ejercicioopcion/ejercicioopcion.module';
+import { DiccionarioFormarPalabrasModule } from './modules/diccionarioformarpalabra/diccionarioformarpalabas.module';
+import { ResultadoEjercicioModule } from './modules/resultadoejercicio/resultadoejercicio.module';
+import { DiccionarioDiscriminacionVisualModule } from './modules/diccionariodiscriminacionvisual/diccionariodiscriminacionvisual.module';
+import { DiccionarioDiscriminacionPalabraModule } from './modules/diccionariodiscriminacionpalabra/diccionariodiscriminacionpalabras.module';
+import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrarpalabras/diccionarioencontrarletras.module';
 
 @Module({
   imports: [
     HttpModule,
     AlumnoModule,
     AreaModule,
+    DiccionarioModule,
     EntidadModule,
     ProfesorModule,
     ResultadoTestModule,
     ResultadoItemModule,
     UsuarioModule,
+    EjercicioModule,
+    EjercicioOpcionModule,
+    ResultadoEjercicioModule,
+    DiccionarioFormarPalabrasModule,
+    DiccionarioDiscriminacionVisualModule,
+    DiccionarioDiscriminacionPalabraModule,
+    DiccionarioEncontrarLetrasModule,
     DatabaseModule,
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV] || '.env',

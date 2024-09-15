@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
-  OneToOne
+  OneToOne,
 } from 'typeorm';
 
 import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
@@ -24,29 +24,36 @@ export class Entidades {
   @Column({ type: 'varchar', length: 100 })
   nombre: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   apellido: string;
 
-  @Column('date')
+  @Column({type: 'date', nullable: true})
   fechaNacimiento: Date;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ type: 'varchar', length: 1, nullable: true })
+  sexo: string | null;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
   telefono: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   direccion: string;
-  
-  @Column({ type: 'varchar', length: 20, unique: true })
+
+  @Column({ type: 'varchar', length: 20, unique: true, nullable: true })
   nroDocumento: string;
-  
+
   @OneToOne(() => Usuarios, (usuario) => usuario.entidad)
   @JoinColumn()
   usuario: Usuarios;
-  
-  @OneToOne(() => Alumnos, (alumno) => alumno.entidad)
-  alumno : Alumnos;
 
-  @OneToOne(() => Profesores, (profesor) => profesor.entidad)
+  @OneToOne(() => Alumnos, (alumno) => alumno.entidad)
+  alumno: Alumnos;
+
+  @OneToOne(() => Profesores, (profesor) => profesor.entidad, {
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   profesor: Profesores;
 
   @CreateDateColumn({

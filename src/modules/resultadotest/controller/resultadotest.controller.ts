@@ -15,27 +15,33 @@ import {
   CreateResultadotestDto,
   UpdateResultadotestDto,
 } from '../dtos/resultadotest.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { Public } from '../../../auth/decorators/public.decorator';
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('resultadotest')
-//@UseGuards(JwtAuthGuard)
 @Controller('resultadotest')
 export class ResultadoTestController {
   constructor(private resultadotestService: ResultadoTestService) {}
 
   @Get()
-  getResultadostest() {
+  getAll() {
     return this.resultadotestService.findAll();
+  }
+
+  @Get('profesor/:idProfesor')
+  getResultadostest(@Param('idProfesor', ParseIntPipe) idProfesor: number) {
+    return this.resultadotestService.findAllAlumnosByProfesor(idProfesor);
   }
 
   @Get(':id')
   getOne(@Param('id', ParseIntPipe) id: number) {
     return this.resultadotestService.findOne(id);
   }
-  
+
   @Post()
   create(@Body() payload: CreateResultadotestDto) {
     return this.resultadotestService.create(payload);

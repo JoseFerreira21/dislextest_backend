@@ -12,6 +12,7 @@ import {
 
 import { Areas } from 'src/modules/area/entities/areas.entity';
 import { ResultadoTest } from 'src/modules/resultadotest/entities/resultadotest.entity';
+import { ResultadoEjercicios } from 'src/modules/resultadoejercicio/entities/resultadoejercicio.entity';
 
 @Entity()
 export class ResultadoItem {
@@ -26,6 +27,9 @@ export class ResultadoItem {
 
   @Column({ type: 'varchar', length: 255 })
   observacion: string;
+
+  @Column({ type: 'integer'})
+  tiempoEmpleado: number;
 
   @ManyToOne(() => Areas, (area) => area.resultadoitems)
   area: Areas;
@@ -48,4 +52,7 @@ export class ResultadoItem {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  @OneToMany(() => ResultadoEjercicios, (resultadoejercicio) => resultadoejercicio.ejercicio)
+  resultadoejercicio: ResultadoEjercicios[];
 }
