@@ -8,10 +8,7 @@ import {
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateProfesorDto {
-  @IsString()
-  @ApiProperty({ description: `curso profesor` })
-  curso: string;
-
+  
   @IsNumber()
   @ApiProperty({ description: `id entidad` })
   readonly entidadId: number;

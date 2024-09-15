@@ -15,13 +15,14 @@ import {
   CreateResultadoItemDto,
   UpdateResultadoItemDto,
 } from '../dtos/resultadoitem.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { Public } from '../../../auth/decorators/public.decorator'
 import { JwtAuthGuard } from '../../../auth/guards/jwt.auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('resultadotestitem')
-//@UseGuards(JwtAuthGuard)
 @Controller('resultadotestitem')
 export class ResultadoItemController {
   constructor(private resultadoItemService: ResultadoItemService) {}

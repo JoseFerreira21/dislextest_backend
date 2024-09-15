@@ -10,6 +10,10 @@ export class CreateResultadotestDto {
   @IsString()
   observacion: string;
 
+  @ApiProperty({description: 'tiempo total empleado en el test'})
+  @IsNumber()
+  tiempoTotal: number;
+
   @ApiProperty({description: 'id del alumno'})
   @IsNumber()
   readonly alumnoId: number;
