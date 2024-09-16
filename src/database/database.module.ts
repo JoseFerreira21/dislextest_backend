@@ -23,7 +23,9 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
           synchronize: false, 
           autoLoadEntities: true,
-          ssl: ssl ? { rejectUnauthorized: false } : null, // Configuración de SSL
+          ssl: {
+            rejectUnauthorized: false, // No validar certificados
+          }
         };
       },
     }),
@@ -43,7 +45,9 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
           password,
           port,
-          ssl: ssl ? { rejectUnauthorized: false } : null, // Configuración de SSL
+          ssl: {
+              rejectUnauthorized: false, // No validar certificados
+          }
         });
         client.connect();
         return client;
