@@ -50,7 +50,7 @@ import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrar
       envFilePath: enviroments[process.env.NODE_ENV] || '.env', // Cargamos el archivo de entorno adecuado
       load: [config], // Cargamos configuraciones adicionales desde `config.ts`
       isGlobal: true, // Hacemos las variables disponibles globalmente
-      validationSchema: configSchema // Validamos las variables con `configSchema`
+      validationSchema: configSchema, // Validamos las variables con `configSchema`
     }),
 
     AuthModule,
