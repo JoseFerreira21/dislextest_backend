@@ -13,7 +13,7 @@ const API_KEY_PROD = 'PROD1212121SA';
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, dbName, password, port, ssl } = configService.postgres;
+        const { user, host, dbName, password, port/*, ssl*/ } = configService.postgres;
         return {
           type: 'postgres',
           host,
@@ -23,7 +23,7 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
           synchronize: false, 
           autoLoadEntities: true,
-          ssl: ssl ? { rejectUnauthorized: false } : null, // Configuración de SSL
+          //ssl: ssl ? { rejectUnauthorized: false } : undefined, // Configuración de SSL
         };
       },
     }),
@@ -36,14 +36,14 @@ const API_KEY_PROD = 'PROD1212121SA';
     {
       provide: 'PG',
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, dbName, password, port, ssl } = configService.postgres;
+        const { user, host, dbName, password, port/*, ssl*/ } = configService.postgres;
         const client = new Client({
           user,
           host,
           database: dbName,
           password,
           port,
-          ssl: ssl ? { rejectUnauthorized: false } : null, // Configuración de SSL
+          //ssl: ssl ? { rejectUnauthorized: false } : undefined, // Configuración de SSL
         });
         client.connect();
         return client;
