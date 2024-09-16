@@ -23,6 +23,7 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
           synchronize: false, 
           autoLoadEntities: true,
+          migrationsRun: true,
           ssl: {
             rejectUnauthorized: false, // No validar certificados
           }
