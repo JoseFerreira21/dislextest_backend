@@ -15,20 +15,30 @@ import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
 import { Profesores } from 'src/modules/profesor/entities/profesores.entity';
 import { ResultadoTest } from 'src/modules/resultadotest/entities/resultadotest.entity';
 import { ResultadoEjercicios } from 'src/modules/resultadoejercicio/entities/resultadoejercicio.entity';
+import { Grados } from 'src/modules/grado/entities/grado.entity';
+import { Instituciones } from 'src/modules/institucion/entities/institucion.entity';
 
 @Entity()
 export class Alumnos {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  grado: string;
-
   @Column({ type: 'int' })
   año: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  institucion: string;
+  @ManyToOne(() => Grados, (grado) => grado.alumnos, {
+    eager: true,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  grado: Grados;
+
+  @ManyToOne(() => Instituciones, (institucion) => institucion.alumnos, {
+    eager: true,
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  institucion: Instituciones;
 
   @Column({ type: 'int' })
   entidadId: number;

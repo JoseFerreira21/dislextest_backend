@@ -24,6 +24,8 @@ import { ResultadoEjercicioModule } from './modules/resultadoejercicio/resultado
 import { DiccionarioDiscriminacionVisualModule } from './modules/diccionariodiscriminacionvisual/diccionariodiscriminacionvisual.module';
 import { DiccionarioDiscriminacionPalabraModule } from './modules/diccionariodiscriminacionpalabra/diccionariodiscriminacionpalabras.module';
 import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrarpalabras/diccionarioencontrarletras.module';
+import { GradoModule } from './modules/grado/grado.module';
+import { InstitucionModule } from './modules/institucion/institucion.module';
 
 @Module({
   imports: [
@@ -44,6 +46,8 @@ import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrar
     DiccionarioDiscriminacionPalabraModule,
     DiccionarioEncontrarLetrasModule,
     DatabaseModule,
+    GradoModule,
+    InstitucionModule,
 
     // Configuración del módulo de configuración con diferentes entornos
     ConfigModule.forRoot({

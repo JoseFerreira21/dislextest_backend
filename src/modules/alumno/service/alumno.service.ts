@@ -10,6 +10,9 @@ import { Client } from 'pg';
 import { ApiTags } from '@nestjs/swagger';
 import { Profesores } from 'src/modules/profesor/entities/profesores.entity';
 
+import { Grados } from 'src/modules/grado/entities/grado.entity';
+import { Instituciones } from 'src/modules/institucion/entities/institucion.entity'; 
+
 @ApiTags()
 @Injectable()
 export class AlumnoService {
@@ -19,6 +22,8 @@ export class AlumnoService {
     private entidadRepository: Repository<Entidades>,
     @InjectRepository(Profesores)
     private profesorRepository: Repository<Profesores>,
+    @InjectRepository(Grados) private gradoRepository: Repository<Grados>,
+    @InjectRepository(Instituciones) private institucionRepository: Repository<Instituciones>,
     @Inject('PG') private clientPg: Client,
   ) {}
 
@@ -60,6 +65,16 @@ export class AlumnoService {
         id: data.profesorId,
       });
       newAlumno.profesor = profesor;
+    }
+
+    if (data.gradoId) {
+      const grado = await this.gradoRepository.findOne(data.gradoId);
+      newAlumno.grado = grado;
+    }
+
+    if (data.institucionId) {
+      const institucion = await this.institucionRepository.findOne(data.institucionId);
+      newAlumno.institucion = institucion;
     }
 
     return this.alumnoRepository.save(newAlumno);
@@ -108,27 +123,44 @@ export class AlumnoService {
   findAllByProfesor(idProfesor: number) {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
-        `SELECT a.id as "alumnoId", 
-                                e.id,
-                                e."tipoEntidad", 
-                                e.nombre, 
-                                e.apellido, 
-                                TO_CHAR("fechaNacimiento", 'DD/MM/YYYY') as "fechaNacimiento",
-                                e.sexo,
-                                date_part('year', now()) - date_part('year', e."fechaNacimiento") ||
-                                ' años' as edad,
-                                e.telefono, 
-                                e.direccion,
-                                e."nroDocumento",
-                                a.grado,
-                                a.año,
-                                a.institucion 
-                           FROM alumnos a, entidades e
-                          WHERE 1 = 1
-                           and a."profesorId" = $1
-                           and a."entidadId" = e.id
-                           and e."tipoEntidad" = 'AL'  
-                        order by a.id`,
+        `SELECT a.id as "alumnoId",
+                e.id,
+                e."tipoEntidad", 
+                e.nombre, 
+                e.apellido, 
+                TO_CHAR("fechaNacimiento", 'DD/MM/YYYY') as "fechaNacimiento",
+                e.sexo,
+                date_part('year', now()) - date_part('year', e."fechaNacimiento") || ' años' as edad,
+                e.telefono, 
+                e.direccion,
+                e."nroDocumento",
+                a.año,
+                jsonb_build_object(
+                  'id', g.id,
+                  'nombre', g.descripcion
+                ) as grado,
+                jsonb_build_object(
+                  'id', i.id,
+                  'nombre', i.descripcion
+                ) as institucion,
+                (select case
+                  when t.cantidad = 0 then 'N'
+                  when t.cantidad = 5 then 'S'
+                  else 'P'
+                end test
+                from (
+                  select count(1) as cantidad 
+                  from resultado_test rt, resultado_item ri 
+                  where rt."alumnoId" = a.id 
+                  and rt.id = ri."resultadotestId"
+                ) t) as "realizoTest"
+          FROM alumnos a
+          JOIN entidades e ON a."entidadId" = e.id
+          JOIN grados g ON a."gradoId" = g.id
+          JOIN instituciones i ON a."institucionId" = i.id
+          WHERE a."profesorId" = $1
+          AND e."tipoEntidad" = 'AL'
+          ORDER BY a.id`,
         [idProfesor],
         (err, res) => {
           if (err) {
@@ -172,7 +204,7 @@ export class AlumnoService {
   findAlumnoIdByEntidadID(EntidadId: number) {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
-        `SELECT a.id, a.grado, a.año, a.institucion, a."entidadId", a."profesorId"
+        `SELECT a.id, a."entidadId", a."profesorId", a."gradoId" , a."institucionId" 
          FROM alumnos a
          WHERE a."entidadId" = $1`,
         [EntidadId],
@@ -180,7 +212,7 @@ export class AlumnoService {
           if (err) {
             return reject(err);
           }
-          if (!res || !res.rows || res.rows.length === 0) {
+          if (!res || !res.rows) {
             return reject(
               new Error('No se encontró el alumno con el ID especificado.'),
             );
