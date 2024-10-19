@@ -3,17 +3,22 @@ import { PartialType, OmitType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateAlumnoDto {
   
-  @IsString()
   @ApiProperty({ description: `Grado del alumno` })
-  grado: string;
-
+  @IsNotEmpty()
+  @IsPositive()
   @IsNumber()
+  gradoId: number;
+
   @ApiProperty({ description: `Año` })
+  @IsNumber()
+  @IsPositive()
   año: number;
 
-  @IsString()
   @ApiProperty({ description: `Institución a donde cursa` })
-  institucion: string;
+  @IsNotEmpty()
+  @IsPositive()
+  @IsNumber()
+  institucionId: number;
 
   @ApiProperty()
   @IsNotEmpty()

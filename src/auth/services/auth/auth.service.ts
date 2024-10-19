@@ -24,15 +24,9 @@ export class AuthService {
 
   async existEmail(email: string){
     const userEmail = await this.usuarioService.findByMail(email);
-    //console.log(userEmail);
-    
-    //return userEmail ? true : false; //validación ternaria
-    
     if (userEmail == undefined) {
-      //console.log('Si es undefined');
       return true;
     }
-    //console.log('No es undefined');
     return false;
   }
 

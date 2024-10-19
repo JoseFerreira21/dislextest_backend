@@ -5,9 +5,9 @@ import { AreaController } from './controller/area.controller';
 import { Areas } from './entities/areas.entity';
 import { AreaService } from './service/area.service';
 
-import { ResultadoItemController } from '../resultadotestitem/controller/resultadoitem.controller';
-import { ResultadoItemService } from '../resultadotestitem//service/resultadoitem.service';
-import { ResultadoItem } from '../resultadotestitem//entities/resultadoitem.entity';
+import { ResultadoItemController } from '../resultado_test_item/controller/resultado_item.controller';
+import { ResultadoItemService } from '../resultado_test_item/service/resultado_item.service';
+import { ResultadoItem } from '../resultado_test_item/entities/resultado_item.entity';
 
 
 

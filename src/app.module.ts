@@ -5,8 +5,8 @@ import { AlumnoModule } from './modules/alumno/alumno.module';
 import { AreaModule } from './modules/area/area.module';
 import { EntidadModule } from './modules/entidad/entidad.module';
 import { ProfesorModule } from './modules/profesor/profesor.module';
-import { ResultadoTestModule } from './modules/resultadotest/resultadotest.module';
-import { ResultadoItemModule } from './modules/resultadotestitem/resultadoitem.module'; 
+import { ResultadoTestModule } from './modules/resultado_test/resultado_test.module';
+import { ResultadoItemModule } from './modules/resultado_test_item/resultado_item.module'; 
 import { UsuarioModule } from './modules/usuario/usuario.module';
 import { DatabaseModule } from './database/database.module';
 import { AppController } from './app.controller';
@@ -18,12 +18,19 @@ import configSchema from './config/configSchema'; // Archivo con el esquema de v
 import { AuthModule } from './auth/auth.module';
 import { DiccionarioModule } from './modules/diccionario/diccionario.module';
 import { EjercicioModule } from './modules/ejercicio/ejercicio.module';
-import { EjercicioOpcionModule } from './modules/ejercicioopcion/ejercicioopcion.module';
-import { DiccionarioFormarPalabrasModule } from './modules/diccionarioformarpalabra/diccionarioformarpalabas.module';
-import { ResultadoEjercicioModule } from './modules/resultadoejercicio/resultadoejercicio.module';
-import { DiccionarioDiscriminacionVisualModule } from './modules/diccionariodiscriminacionvisual/diccionariodiscriminacionvisual.module';
-import { DiccionarioDiscriminacionPalabraModule } from './modules/diccionariodiscriminacionpalabra/diccionariodiscriminacionpalabras.module';
-import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrarpalabras/diccionarioencontrarletras.module';
+import { EjercicioOpcionModule } from './modules/ejercicio_opcion/ejercicio_opcion.module';
+import { DiccionarioFormarPalabrasModule } from './modules/diccionario_formar_palabra/diccionario_formar_palabas.module';
+import { ResultadoEjercicioModule } from './modules/resultado_ejercicio/resultado_ejercicio.module';
+import { DiccionarioDiscriminacionVisualModule } from './modules/diccionario_discriminacion_visual/diccionario_discriminacion_visual.module';
+import { DiccionarioDiscriminacionPalabraModule } from './modules/diccionario_discriminacion_palabra/diccionario_discriminacion_palabras.module';
+import { DiccionarioEncontrarLetrasModule } from './modules/diccionario_encontrar_letras/diccionario_encontrarletras.module';
+import { GradoModule } from './modules/grado/grado.module';
+import { InstitucionModule } from './modules/institucion/institucion.module';
+import { DiccionarioLetrasDesordenadasModule } from './modules/diccionario_letras_desordenadas/diccionarioletrasdesordenadas.module';
+import { DiccionarioEncerrarSilabasCsModule } from './modules/diccionario_encerrar_silaba_cs/diccionario_encerrar_silaba_cs.module';
+import { DiccionarioEncerrarSilabasCfModule } from './modules/diccionario_encerrar_silaba_cf/diccionario_encerrar_silaba_cf.module';
+import { DiccionarioContarLetrasModule } from './modules/diccionario_contar_letras/diccionario_contar_letras.module';
+import { DiccionarioIzquierdaDerechaModule } from './modules/diccionario_izquierda_derecha/diccionario_izquierda_derecha.module';
 
 @Module({
   imports: [
@@ -43,7 +50,14 @@ import { DiccionarioEncontrarLetrasModule } from './modules/diccionarioencontrar
     DiccionarioDiscriminacionVisualModule,
     DiccionarioDiscriminacionPalabraModule,
     DiccionarioEncontrarLetrasModule,
+    DiccionarioLetrasDesordenadasModule,
+    DiccionarioEncerrarSilabasCsModule,
+    DiccionarioContarLetrasModule,
+    DiccionarioEncerrarSilabasCfModule,
+    DiccionarioIzquierdaDerechaModule,
     DatabaseModule,
+    GradoModule,
+    InstitucionModule,
 
     // Configuración del módulo de configuración con diferentes entornos
     ConfigModule.forRoot({

@@ -1,8 +1,8 @@
 import { PrimaryGeneratedColumn, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 
 import { Areas } from 'src/modules/area/entities/areas.entity';
-import { EjerciciosOpciones } from 'src/modules/ejercicioopcion/entities/ejercicioopcion.entity';
-import { ResultadoEjercicios } from 'src/modules/resultadoejercicio/entities/resultadoejercicio.entity';
+import { EjerciciosOpciones } from 'src/modules/ejercicio_opcion/entities/ejercicio_opcion.entity';
+import { ResultadoEjercicios } from 'src/modules/resultado_ejercicio/entities/resultado_ejercicio.entity';
 
 @Entity()
 export class Ejercicios {
