@@ -49,8 +49,35 @@ export class DiccionarioController {
     return this.diccionarioService.findDiccionarioEncontrarLetrasV2();
   }
 
+  ///#6--------------------------ENCERRAR PALABRAS-----------------------------//
   @Get('encerrar-palabras')
   getEncerrarPalabras() {
     return this.diccionarioService.findDiccionarioEncerrarPalabra();
   }
+
+  ///#6--------------------------LETRAS DESORDENADAS-----------------------------//
+  @Get('letras-desordenadas')
+  getLetrasDesordenadas() {
+    return this.diccionarioService.findDiccionarioLetrasDesordenadas();
+  }
+
+  ///#7--------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
+  @Get('encerrar-silabas-conciencia-silabica')
+  geEncerrarSilabasCs() {
+    return this.diccionarioService.findDiccionarioEncerrarSilabasCS();
+  }
+
+  ///#8--------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
+  @Get('contar-letras')
+  geContarLetras() {
+    return this.diccionarioService.findDiccionarioContarLetras();
+  }
+
+  ///#9--------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
+  @Get('encerrar-silabas-conciencia-fonologica')
+  geEncerrarSilabasCf() {
+    return this.diccionarioService.findDiccionarioEncerrarSilabasCF();
+  }
+  
+
 }

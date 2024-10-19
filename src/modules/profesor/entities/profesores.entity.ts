@@ -13,7 +13,7 @@ import {
 
 import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
 import { Alumnos } from 'src/modules/alumno/entities/alumnos.entity';
-import { ResultadoTest } from 'src/modules/resultadotest/entities/resultadotest.entity';
+import { ResultadoTest } from 'src/modules/resultado_test/entities/resultado_test.entity';
 
 @Entity()
 export class Profesores {

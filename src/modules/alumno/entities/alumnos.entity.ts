@@ -13,8 +13,8 @@ import {
 
 import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
 import { Profesores } from 'src/modules/profesor/entities/profesores.entity';
-import { ResultadoTest } from 'src/modules/resultadotest/entities/resultadotest.entity';
-import { ResultadoEjercicios } from 'src/modules/resultadoejercicio/entities/resultadoejercicio.entity';
+import { ResultadoTest } from 'src/modules/resultado_test/entities/resultado_test.entity';
+import { ResultadoEjercicios } from 'src/modules/resultado_ejercicio/entities/resultado_ejercicio.entity';
 import { Grados } from 'src/modules/grado/entities/grado.entity';
 import { Instituciones } from 'src/modules/institucion/entities/institucion.entity';
 

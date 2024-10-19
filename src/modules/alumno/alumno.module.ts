@@ -5,7 +5,7 @@ import { AlumnoController } from '../alumno/controller/alumno.controller';
 import { AlumnoService } from '../alumno/service/alumno.service';
 import { Alumnos } from './entities/alumnos.entity';
 import { Entidades } from 'src/modules/entidad/entities/entidades.entity';
-import { ResultadoTest } from '../resultadotest/entities/resultadotest.entity';
+import { ResultadoTest } from '../resultado_test/entities/resultado_test.entity';
 import { Profesores } from '../profesor/entities/profesores.entity';
 import { Grados } from '../grado/entities/grado.entity';
 import { Instituciones } from '../institucion/entities/institucion.entity';

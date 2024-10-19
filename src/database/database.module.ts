@@ -23,14 +23,14 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
           synchronize: false, 
           autoLoadEntities: true,
-          migrationsRun: true,
-          migrations: ['dist/database/migrations/*.js'],
-          cli: {
-            migrationsDir: 'src/database/migrations',
-          },
-          ssl: {
-            rejectUnauthorized: false, // No validar certificados
-          }
+          //migrationsRun: true,
+          //migrations: ['dist/database/migrations/*.js'],
+          //cli: {
+          //  migrationsDir: 'src/database/migrations',
+          //},
+          //ssl: {
+          //  rejectUnauthorized: false, // No validar certificados
+          //}
         };
       },
     }),
@@ -50,9 +50,9 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
           password,
           port,
-          ssl: {
-              rejectUnauthorized: false, // No validar certificados
-          }
+          //ssl: {
+          //    rejectUnauthorized: false, // No validar certificados
+          //}
         });
         client.connect();
         return client;

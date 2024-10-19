@@ -366,5 +366,129 @@ export class DiccionarioService {
       );
     });
   }
+
+  //-------------------------LETRAS DESORDENADAS-----------------------------//
+  findDiccionarioLetrasDesordenadas() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `select a.id as "areaId", 
+                e.id as "ejercicioId", 
+                a.descripcion  as "descripcionEjercicio",
+                dld."ejercicioOpcionesId",
+                dld.palabra as palabra,
+                palabras_a_letras(dld.palabra) as letras,
+                palabras_a_letras(repeat(' ', length(dld.palabra))) as "letrasRespuesta",
+                eo.respuesta as respuesta
+	          from areas a, ejercicios e, 
+	               ejercicios_opciones eo,
+	               diccionario_letras_desordenadas dld 
+	        where a.id  = e."areaId"  
+	          and e.id = eo."ejercicioId"    
+	          and eo.id = dld."ejercicioOpcionesId"  
+	        ORDER BY RANDOM()
+	         LIMIT 2`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
+  //-------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
+  findDiccionarioEncerrarSilabasCS() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `SELECT a.id as "areaId", 
+                e.id as "ejercicioId", 
+                a.descripcion  as "descripcionEjercicio",
+                descs."ejercicioOpcionesId",
+                descs.palabra,
+                descs."palabraIncompleta",
+                descs.opciones,
+                eo.respuesta as respuesta
+          FROM diccionario_encerrar_silabas_cs descs,  
+              areas a, 
+              ejercicios e, 
+            ejercicios_opciones eo
+          WHERE a.id  = e."areaId"  
+                    and e.id = eo."ejercicioId"    
+                    and eo.id = descs."ejercicioOpcionesId"  
+        ORDER BY RANDOM()
+        LIMIT 2`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
+
+  //-------------------------CONTAR LETRAS-----------------------------//
+  findDiccionarioContarLetras() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `select a.id as "areaId", 
+                e.id as "ejercicioId", 
+                a.descripcion  as "descripcionEjercicio",
+                dcl."ejercicioOpcionesId",
+                dcl.letra as letra,
+                dcl.cantidad as cantidad,
+                eo.respuesta as respuesta
+              from areas a, ejercicios e, 
+                  ejercicios_opciones eo,
+                  diccionario_contar_letras dcl 
+            where a.id  = e."areaId"  
+              and e.id = eo."ejercicioId"    
+              and eo.id = dcl."ejercicioOpcionesId"
+              order by dcl."ejercicioOpcionesId"`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
+
+
+  //-------------------------ENCERRAR SILABAS CONCIENCIA FONOLOGICA-----------------------------//
+  findDiccionarioEncerrarSilabasCF() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        ` SELECT a.id as "areaId", 
+                e.id as "ejercicioId", 
+                a.descripcion  as "descripcionEjercicio",
+                descf."ejercicioOpcionesId",
+                descf.palabra,
+                descf."palabraIncompleta",
+                descf.opciones,
+                eo.respuesta as respuesta
+          FROM diccionario_encerrar_silabas_cf descf,  
+              areas a, 
+              ejercicios e, 
+            ejercicios_opciones eo
+          WHERE a.id  = e."areaId"  
+              and e.id = eo."ejercicioId"    
+              and eo.id = descf."ejercicioOpcionesId"
+        ORDER BY RANDOM()
+        LIMIT 2`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
  
 }

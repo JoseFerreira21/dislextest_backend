@@ -9,7 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import { ResultadoItem } from 'src/modules/resultadotestitem/entities/resultadoitem.entity';
+import { ResultadoItem } from 'src/modules/resultado_test_item/entities/resultado_item.entity';
 import { Ejercicios } from 'src/modules/ejercicio/entities/ejercicios.entity';
 
 @Entity()
