@@ -66,20 +66,44 @@ export class ResultadoEjercicioService {
                     '00:00'::time + INTERVAL '1 second' * ri."tiempoEmpleado",
                     'MI:SS'
                 ) as "tiempoEmpleado",
-            eo.respuesta as "respuestaCorrectaEjercicio",
-                        re."respuestaRespondida"  as "respuestaHechaAlumno",
-                        re.acierto
-                    from  ejercicios e, 
-                        ejercicios_opciones eo,
-                        resultado_ejercicios re,
-                        resultado_item ri 
-                  where  e.id = eo."ejercicioId"
-                      and e.id = re."ejercicioId"  
-                      and eo.id = re."ejercicioOpcionesId"  
-                      and re."resultadoitemId" = ri.id  
-              and re."alumnoId"  = $1
-              and re."resultadoitemId" = $2 
-              order by re."ejercicioOpcionesId" `,
+                --eo.respuesta as "respuestaCorrectaEjercicio",
+                case 
+                    when e.id = 7 then
+                        'Sílaba: ' || eo.respuesta || ' - Palabra (' || 
+                        (select palabra 
+                        from diccionario_encerrar_silabas_cs desc2 
+                        where desc2."ejercicioOpcionesId" = eo.id) || ')'
+                    when e.id = 8 then
+                        case 
+                            when eo.respuesta = '8' then '8 - Letra (p)'
+                            when eo.respuesta = '6' then '6 - Letra (b)'
+                            when eo.respuesta = '3' then '3 - Letra (d)'
+                            else eo.respuesta
+                        end
+                    when e.id = 9 then
+                        'Sílaba: ' || eo.respuesta || ' - Palabra (' || 
+                        (select palabra 
+                        from diccionario_encerrar_silabas_cf desc2 
+                        where desc2."ejercicioOpcionesId" = eo.id) || ')'
+                    when e.id = 10 then
+                        'Posición: ' || eo.respuesta || ' - Imagen: (' || 
+                        (select palabra 
+                        from diccionario_izquierda_derecha did 
+                        where did."ejercicioOpcionesId" = eo.id) || ')'
+                    else eo.respuesta
+                end as "respuestaCorrectaEjercicio",
+                re."respuestaRespondida" as "respuestaHechaAlumno",
+                re.acierto
+            from 
+                ejercicios e
+                join ejercicios_opciones eo on e.id = eo."ejercicioId"
+                join resultado_ejercicios re on e.id = re."ejercicioId" and eo.id = re."ejercicioOpcionesId"
+                join resultado_item ri on re."resultadoitemId" = ri.id
+            where 
+                re."alumnoId"  = $1
+                and re."resultadoitemId" = $2
+            order by 
+                re."ejercicioOpcionesId"`,
               [alumnoId, itemId],
               (err, res) => {
                 if (err) {

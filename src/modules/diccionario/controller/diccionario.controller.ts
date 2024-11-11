@@ -17,39 +17,24 @@ export class DiccionarioController {
   }
 
   //#2-------------------------DISCRIMINACION VISUAL-----------------------------//
-  //@Get('discriminacion-visual')
-  //getDiscriminacionVisual() {
-  // return this.diccionarioService.findDiccionarioDiscriminacionVisual();
-  //}
-
   @Get('discriminacion-visual')
   getDiscriminacionVisual() {
-    return this.diccionarioService.findDiccionarioDiscriminacionVisualV2();
+    return this.diccionarioService.findDiccionarioDiscriminacionVisual();
   }
 
   //#3-------------------------DISCRIMINACION PALABRAS-----------------------------//
-  //@Get('discriminacion-palabras')
-  //getDiscriminacionPalabras() {
-  //  return this.diccionarioService.findDiccionarioDiscriminacionPalabras();
-  //}
-
   @Get('discriminacion-palabras')
   getDiscriminacionPalabras() {
-    return this.diccionarioService.findDiccionarioDiscriminacionPalabrasV2();
+    return this.diccionarioService.findDiccionarioDiscriminacionPalabras();
   }
-
-  ///#4-------------------------ENCONTRAR LETRAS EN PALABRAS-----------------------------//
-  //@Get('encontrar-letras-en-palabras')
-  //getEncontrarLetras() {
-  //  return this.diccionarioService.findDiccionarioEncontrarLetras();
-  //}
-
+  
+  ///#4--------------------------ENCONTRAR LETRAS EN PALABRAS-----------------------------//
   @Get('encontrar-letras-en-palabras')
   getEncontrarLetras() {
     return this.diccionarioService.findDiccionarioEncontrarLetrasV2();
   }
 
-  ///#6--------------------------ENCERRAR PALABRAS-----------------------------//
+  ///#5--------------------------ENCERRAR PALABRAS-----------------------------//
   @Get('encerrar-palabras')
   getEncerrarPalabras() {
     return this.diccionarioService.findDiccionarioEncerrarPalabra();
@@ -67,16 +52,22 @@ export class DiccionarioController {
     return this.diccionarioService.findDiccionarioEncerrarSilabasCS();
   }
 
-  ///#8--------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
+  ///#8--------------------------CONTAR LETRAS-----------------------------//
   @Get('contar-letras')
   geContarLetras() {
     return this.diccionarioService.findDiccionarioContarLetras();
   }
 
-  ///#9--------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
+  ///#9--------------------------ENCERRAR SILABAS CONCIENCIA FONOLOGICA-----------------------------//
   @Get('encerrar-silabas-conciencia-fonologica')
   geEncerrarSilabasCf() {
     return this.diccionarioService.findDiccionarioEncerrarSilabasCF();
+  }
+
+  ///#10--------------------------IZQUIERDA DERECHA-----------------------------//
+  @Get('izquierda-derecha')
+  geIzquierdaDerecha() {
+    return this.diccionarioService.findDiccionarioIzquierdaDerecha();
   }
   
 

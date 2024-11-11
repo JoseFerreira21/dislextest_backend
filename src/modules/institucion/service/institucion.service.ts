@@ -18,18 +18,18 @@ export class InstitucionService {
   }
 
   async findOne(id: number): Promise<Instituciones> {
-    const area = await this.institucionRepository.findOne({
+    const institucion = await this.institucionRepository.findOne({
       where: { id: id },
     });
-    if (!area) {
-      throw new NotFoundException(`Area #${id} no existe`);
+    if (!institucion) {
+      throw new NotFoundException(`Institucion #${id} no existe`);
     }
-    return area;
+    return institucion;
   }
 
   create(data: CreateInstitucionDto) {
-    const newArea = this.institucionRepository.create(data);
-    return this.institucionRepository.save(newArea);
+    const newInstitucion = this.institucionRepository.create(data);
+    return this.institucionRepository.save(newInstitucion);
   }
 
   

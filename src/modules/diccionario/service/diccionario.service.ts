@@ -35,55 +35,8 @@ export class DiccionarioService {
     });
   }
 
-  //-------------------------DISCRIMINACION VISUAL-----------------------------//
+  //#2-------------------------DISCRIMINACION VISUAL-----------------------------//
   findDiccionarioDiscriminacionVisual() {
-    return new Promise((resolve, reject) => {
-      this.clientPg.query(
-        `WITH random_group AS
-        (SELECT grupo
-            FROM diccionario_discriminacion_visual
-          group by grupo
-          ORDER BY RANDOM() LIMIT 4),
-        -- Paso 2: Selecciona 8 registros aleatorios de ese grupo
-        random_records as
-        (select a.id as aid, 
-                e.id,
-                a.descripcion,
-                eo.id as "ejercicioOpcionesId",
-                ddv.palabra,
-                ddv.grupo,
-                eo.respuesta as respuesta
-            FROM diccionario_discriminacion_visual ddv,
-                areas                             a,
-                ejercicios                        e,
-                ejercicios_opciones               eo
-          WHERE 1 = 1
-            and grupo in (SELECT grupo FROM random_group)
-            and a.id = e."areaId"
-            and e.id = eo."ejercicioId"
-            and eo.id = ddv."ejercicioOpcionesId"
-          ORDER BY a.id, e.id, a.descripcion, ddv.id, ddv.grupo, RANDOM())
-
-        -- Paso 3: Construye el objeto JSON
-        SELECT rr.aid as "areaId", 
-              rr.id as "ejercicioId",
-              rr.descripcion as "descripcionEjercicio",
-              rr."ejercicioOpcionesId",
-              json_agg(rr.palabra) AS palabra,
-              rr.respuesta
-          FROM random_records rr
-        GROUP BY rr.aid, rr.id, rr.descripcion, rr.respuesta, rr."ejercicioOpcionesId"`,
-        (err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.rows);
-        },
-      );
-    });
-  }
-
-  findDiccionarioDiscriminacionVisualV2() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
         `WITH diccionario_discriminacion_visual AS
@@ -116,55 +69,8 @@ export class DiccionarioService {
     });
   }
 
-  //-------------------------DISCRIMINACION PALABRAS-----------------------------//
+  //#3-------------------------DISCRIMINACION PALABRAS-----------------------------//
   findDiccionarioDiscriminacionPalabras() {
-    return new Promise((resolve, reject) => {
-      this.clientPg.query(
-        ` WITH random_group AS
-          (SELECT grupo
-              FROM diccionario_discriminacion_palabras
-            group by grupo
-            ORDER BY RANDOM() LIMIT 2),
-          -- Paso 2: Selecciona 8 registros aleatorios de ese grupo
-          random_records as
-          (select a.id as aid, 
-                  e.id,
-                  a.descripcion,
-                  eo.id as "ejercicioOpcionesId",
-                  ddp.palabra,
-                  ddp.grupo,
-                  eo.respuesta as respuesta
-              FROM diccionario_discriminacion_palabras ddp,
-                  areas                             a,
-                  ejercicios                        e,
-                  ejercicios_opciones               eo
-            WHERE 1 = 1
-              and grupo in (SELECT grupo FROM random_group)
-              and a.id = e."areaId"
-              and e.id = eo."ejercicioId"
-              and eo.id = ddp."ejercicioOpcionesId"
-            ORDER BY a.id, e.id, a.descripcion, ddp.id, ddp.grupo, RANDOM())
-
-          -- Paso 3: Construye el objeto JSON
-          SELECT rr.aid as "areaId",
-          		   rr.id as "ejercicioId",
-                 rr.descripcion as "descripcionEjercicio",
-                 rr."ejercicioOpcionesId",
-                 json_agg(rr.palabra) AS palabras,
-                 rr.respuesta
-            FROM random_records rr
-          GROUP BY rr.aid, rr.id, rr.descripcion, rr.respuesta, rr."ejercicioOpcionesId"`,
-        (err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res.rows);
-        },
-      );
-    });
-  }
-
-  findDiccionarioDiscriminacionPalabrasV2() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
         ` WITH diccionario_discriminacion_palabras AS
@@ -333,7 +239,7 @@ export class DiccionarioService {
     });
   }
 
-  //-------------------------ENCERRAR PALABRAS-----------------------------//
+  ///#5--------------------------ENCERRAR PALABRAS-----------------------------//
   findDiccionarioEncerrarPalabra() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
@@ -367,7 +273,7 @@ export class DiccionarioService {
     });
   }
 
-  //-------------------------LETRAS DESORDENADAS-----------------------------//
+  ///#6--------------------------LETRAS DESORDENADAS-----------------------------//
   findDiccionarioLetrasDesordenadas() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
@@ -397,7 +303,7 @@ export class DiccionarioService {
     });
   }
 
-  //-------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
+  ///#7--------------------------ENCERRAR SILABAS CONCIENCIA SILABICA-----------------------------//
   findDiccionarioEncerrarSilabasCS() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
@@ -429,7 +335,7 @@ export class DiccionarioService {
   }
 
 
-  //-------------------------CONTAR LETRAS-----------------------------//
+  ///#8--------------------------CONTAR LETRAS-----------------------------//
   findDiccionarioContarLetras() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
@@ -459,7 +365,7 @@ export class DiccionarioService {
 
 
 
-  //-------------------------ENCERRAR SILABAS CONCIENCIA FONOLOGICA-----------------------------//
+  ///#9--------------------------ENCERRAR SILABAS CONCIENCIA FONOLOGICA-----------------------------//
   findDiccionarioEncerrarSilabasCF() {
     return new Promise((resolve, reject) => {
       this.clientPg.query(
@@ -480,6 +386,60 @@ export class DiccionarioService {
               and eo.id = descf."ejercicioOpcionesId"
         ORDER BY RANDOM()
         LIMIT 2`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res.rows);
+        },
+      );
+    });
+  }
+
+  ///#10--------------------------IZQUIERDA DERECHA-----------------------------//
+  findDiccionarioIzquierdaDerecha() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query(
+        `WITH diccionario_izquierda as 
+         (SELECT a.id as "areaId", 
+                e.id as "ejercicioId", 
+                a.descripcion  as "descripcionEjercicio",
+                did."ejercicioOpcionesId",
+                did.palabra,
+                did.posicion ,
+                eo.respuesta as respuesta
+          FROM diccionario_izquierda_derecha did,  
+              areas a, 
+              ejercicios e, 
+            ejercicios_opciones eo
+          WHERE a.id  = e."areaId"  
+              and e.id = eo."ejercicioId"    
+              and eo.id = did."ejercicioOpcionesId"  
+              and did.posicion = 'izquierda'
+        ORDER BY RANDOM()
+        LIMIT 1),
+        diccionario_derecha as
+        (SELECT a.id as "areaId", 
+                e.id as "ejercicioId", 
+                a.descripcion  as "descripcionEjercicio",
+                did."ejercicioOpcionesId",
+                did.palabra ,
+                did.posicion ,
+                eo.respuesta as respuesta
+          FROM diccionario_izquierda_derecha did,  
+              areas a, 
+              ejercicios e, 
+            ejercicios_opciones eo
+          WHERE a.id  = e."areaId"  
+              and e.id = eo."ejercicioId"    
+              and eo.id = did."ejercicioOpcionesId"  
+              and did.posicion = 'derecha'
+        ORDER BY RANDOM()
+        LIMIT 1)
+        SELECT * FROM diccionario_izquierda
+        UNION 
+        SELECT * FROM diccionario_derecha
+        ORDER BY posicion desc`,
         (err, res) => {
           if (err) {
             reject(err);
