@@ -237,7 +237,7 @@ export class Init1731291693536 implements MigrationInterface {
 									   ('Conciencia Silabica', 2, 1.2, 'El / La niño/a tiene un buen rendimiento en el area de Conciencia Silabica.', 'El / La niño/a está con bajo rendimiento en el área de Conciencia Silabica, es conveniente que acuda a un profesional para recibir ayuda.'),
                                        ('Discriminación visual contar letras', 3, 1.8, 'El/ La niño/a tiene un buen rendimiento en el area de Discriminación visual contar letras.', 'El / La niño/a está con bajo rendimiento en el área de Discriminación visual contar letras, es conveniente que acuda a un profesional para recibir ayuda.'),
 									   ('Conciencia Fonológica', 2, 1.2, 'El / La niño/a tiene un buen rendimiento en el area de Conciencia Fonológica.', 'El / La niño/a está con bajo rendimiento en el área de Conciencia Fonológica, es conveniente que acuda a un profesional para recibir ayuda.'),
-									   ('Derecha e Izquierda', 1, 0.6, 'El / La niño/a tiene un buen rendimiento en el area de Derecha e Izquierda.', 'El / La niño/a está con bajo rendimiento en el área de Derecha e Izquierda, es conveniente que acuda a un profesional para recibir ayuda.')`);
+									   ('Lateralidad', 1, 0.6, 'El / La niño/a tiene un buen rendimiento en el area de Lateralidad.', 'El / La niño/a está con bajo rendimiento en el área de Lateralidad, es conveniente que acuda a un profesional para recibir ayuda.')`);
         await queryRunner.query(`INSERT INTO ejercicios
                                 ("areaId")
                                 VALUES
@@ -302,8 +302,8 @@ export class Init1731291693536 implements MigrationInterface {
                                     ('ze', 7), --46
                                     ('ca', 7), --47
                                     (8, 8), --48
-                                    (6, 8), --49
-                                    (3, 8), --50 
+                                    (3, 8), --49
+                                    (6, 8), --50 
                                     ('mar', 9), --51
                                     ('dri', 9), --52
                                     ('ser', 9), --53
@@ -448,8 +448,8 @@ export class Init1731291693536 implements MigrationInterface {
                                 (cantidad, letra, "ejercicioOpcionesId")
                                 VALUES
                                 (8, 'p', 48),
-                                (6, 'd', 49),
-                                (3, 'b', 50)`);                             
+                                (3, 'd', 49),
+                                (6, 'b', 50)`);                             
                                     
         //#9    
         await queryRunner.query(`INSERT INTO diccionario_encerrar_silabas_cf 
