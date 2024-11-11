@@ -137,11 +137,11 @@ export class AlumnoService {
                 a.año,
                 jsonb_build_object(
                   'id', g.id,
-                  'nombre', g.descripcion
+                  'descripcion', g.descripcion
                 ) as grado,
                 jsonb_build_object(
                   'id', i.id,
-                  'nombre', i.descripcion
+                  'descripcion', i.descripcion
                 ) as institucion,
                 (select case
                   when t.cantidad = 0 then 'N'
