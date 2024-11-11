@@ -145,7 +145,7 @@ export class AlumnoService {
                 ) as institucion,
                 (select case
                   when t.cantidad = 0 then 'N'
-                  when t.cantidad = 5 then 'S'
+                  when t.cantidad = 10 then 'S'
                   else 'P'
                 end test
                 from (
