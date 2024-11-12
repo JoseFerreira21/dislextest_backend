@@ -28,6 +28,7 @@ const API_KEY_PROD = 'PROD1212121SA';
           cli: {
             migrationsDir: 'src/database/migrations',
           },
+          timezone: 'America/Asuncion'
         };
       },
     }),
