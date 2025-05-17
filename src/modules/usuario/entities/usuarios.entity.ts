@@ -37,13 +37,14 @@ export class Usuarios {
 
   @CreateDateColumn({
     type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: () => `NOW() AT TIME ZONE 'America/Asuncion'`,
   })
   createAt: Date;
-
+  
   @UpdateDateColumn({
     type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
+    default: () => `NOW() AT TIME ZONE 'America/Asuncion'`,
+    onUpdate: 'NOW() AT TIME ZONE \'America/Asuncion\'',
   })
-  updateAt: Date;  
+  updateAt: Date; 
 }
